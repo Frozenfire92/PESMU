@@ -26,7 +26,6 @@ class CMsgTesterMenu : public CNppPluginMenu
         static void funcNpeGetState();
         static void funcNpePrint();
         static void funcNpeExecute();
-        static void funcNpeNppExec();
 
 };
 

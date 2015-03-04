@@ -7,12 +7,11 @@ extern CMsgTester thePlugin;
 
 
 FuncItem CMsgTesterMenu::arrFuncItems[N_NBFUNCITEMS] = {
-    { _T("NPEM_GETVERDWORD"), funcNpeGetVerDword,  0, false, NULL },
-    { _T("NPEM_GETVERSTR"),   funcNpeGetVerStr,    0, false, NULL },
-    { _T("NPEM_GETSTATE"),    funcNpeGetState,     0, false, NULL },
-    { _T("NPEM_PRINT"),       funcNpePrint,        0, false, NULL },
-    { _T("NPEM_EXECUTE"),     funcNpeExecute,      0, false, NULL },
-    { _T("NPEM_NPPEXEC"),     funcNpeNppExec,      0, false, NULL }
+    { _T("Compile file"), funcNpeGetVerDword,  0, false, NULL },
+    { _T("Execute file"),   funcNpeGetVerStr,    0, false, NULL },
+    { _T("Compile and Execute file"),    funcNpeGetState,     0, false, NULL },
+    { _T("Compile Project"),       funcNpePrint,        0, false, NULL },
+    { _T("JAR Project"),     funcNpeExecute,      0, false, NULL }
 };
 
 void CMsgTesterMenu::funcNpeGetVerDword()
@@ -65,17 +64,3 @@ void CMsgTesterMenu::funcNpeExecute()
     if ( npeMsgr.NpeExecute(&nep) != NPE_EXECUTE_OK )
         ::MessageBox( thePlugin.getNppWnd(), _T("Operation failed"), _T("NPEM_EXECUTE"), MB_OK | MB_ICONERROR);
 }
-
-void CMsgTesterMenu::funcNpeNppExec()
-{
-    NpeNppExecParam npep;
-    npep.szScriptName = _T("script");
-    // npep.szScriptName = _T("C:\\Program Files\\My NppExec Scripts\\test script.txt");
-    npep.szScriptArguments = _T("\"arg 1\" \"arg 2\"");
-    npep.dwResult = 1; // send notification when executed
-
-    CNppExecPluginMsgSender npeMsgr( thePlugin.getNppWnd(), thePlugin.getDllFileName() );
-    if ( npeMsgr.NpeNppExec(&npep) != NPE_NPPEXEC_OK )
-        ::MessageBox( thePlugin.getNppWnd(), _T("Operation failed"), _T("NPEM_NPPEXEC"), MB_OK | MB_ICONERROR);
-}
-
