@@ -21,11 +21,11 @@ class CMsgTesterMenu : public CNppPluginMenu
         static FuncItem arrFuncItems[N_NBFUNCITEMS];
 
     protected:
-        static void funcNpeGetVerDword();
-        static void funcNpeGetVerStr();
-        static void funcNpeGetState();
-        static void funcNpePrint();
-        static void funcNpeExecute();
+		static void funcCompileFile();
+		static void funcExecuteFile();
+		static void funcCompileExecuteFile();
+		static void funcCompileProject();
+		static void funcJARProject();
 
 };
 
