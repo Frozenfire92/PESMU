@@ -23,7 +23,6 @@
 
 // --- Local variables ---
 static bool do_active_commenting;	// active commenting - create or extend a document block
-//static bool do_active_wrapping;	// active wrapping - wrap text inside of document blocks...todo
 
 static NppData nppData;
 static SciFnDirect pSciMsg;			// For direct scintilla call
@@ -34,16 +33,17 @@ static HANDLE _hModule;				// For dialog initialization
 // --- Menu callbacks ---
 static void doxyItFunction();
 static void doxyItFile();
+static void doxyItClass();
 static void activeCommenting();
-//static void activeWrapping();
 //static void showSettings();
 //static void showAbout();
 
 // --- Global variables ---
 ShortcutKey sk = {true, true, true, 'D'};
 FuncItem funcItem[nbFunc] = {
-	{TEXT("DoxyIt - Function"), doxyItFunction,   0, false, &sk},
-	{TEXT("DoxyIt - File"),     doxyItFile,       0, false, NULL}//,
+	{TEXT("Document File"), doxyItFile, 0, false, NULL },
+	{TEXT("Javadoc Class"), doxyItClass,   0, false, NULL},
+	{ TEXT("Javadoc Function"), doxyItFunction, 0, false, &sk }//,
 	//{TEXT(""),                  NULL,             0, false, NULL}//, // separator
 	//{TEXT("Active commenting"), activeCommenting, 0, false, NULL}//,
 	//{TEXT(""),                  NULL,             0, false, NULL}, // separator
@@ -300,6 +300,37 @@ void doxyItFile()
 	doc_block = FormatFileBlock(pd);
 
 	SendScintilla(SCI_REPLACESEL, SCI_UNUSED, (LPARAM) doc_block.c_str());
+}
+
+void doxyItClass()
+{
+	std::string doc_block;
+	int startLine, endLine;
+	char *indent = NULL;
+
+	if (!updateScintilla()) return;
+
+	doc_block = Parse();
+
+	// Don't issue any warning messages, let Parse() handle that for us since it knows
+	// about the error. Just return if it is a zero length string
+	if (doc_block.length() == 0)
+		return;
+
+	// Keep track of where we started
+	startLine = SendScintilla(SCI_LINEFROMPOSITION, SendScintilla(SCI_GETCURRENTPOS));
+
+	// Get the whitespace of the next line so we can insert it in front of 
+	// all the lines of the document block that is going to be inserted
+	indent = getLineIndentStr(startLine + 1);
+
+	SendScintilla(SCI_BEGINUNDOACTION);
+	SendScintilla(SCI_REPLACESEL, SCI_UNUSED, (LPARAM)doc_block.c_str());
+	endLine = SendScintilla(SCI_LINEFROMPOSITION, SendScintilla(SCI_GETCURRENTPOS)); // get the end of the document block
+	if (indent) insertBeforeLines(indent, startLine, endLine + 1);
+	SendScintilla(SCI_ENDUNDOACTION);
+
+	if (indent) delete[] indent;
 }
 
 //void activeCommenting()

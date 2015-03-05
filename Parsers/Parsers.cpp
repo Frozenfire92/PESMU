@@ -41,7 +41,13 @@ const char *default_file_format =
 	"$@brief Brief\r\n"
 	;
 
-
+const char *default_class_format = 
+	"\r\n"
+	"Class description\r\n"
+	"\r\n"
+	"$@author \r\n"
+	"$@version \r\n"
+	;
 
 const Parser *getParserByName(std::wstring name)
 {
@@ -296,6 +302,18 @@ std::string FormatFunctionBlock(const Parser *p, const ParserDefinition *pd, con
 	return FormatBlock(pd, kw, pd->function_format);
 }
 
+std::string FormatClassBlock(const Parser *p, const ParserDefinition *pd, const char *text)
+{
+	Keywords kw;
+
+	if (!p->external)
+	{
+		kw = p->parse(pd, text);
+		if (kw.size() == 0) return std::string("");
+	}
+
+}
+
 // Get the current parser and text to parse
 std::string Parse(void)
 {
@@ -346,6 +364,62 @@ std::string Parse(void)
 	if(doc_block.length() == 0)
 	{
 		MessageBox(NULL, TEXT("Error: Cannot parse function definition. Make sure the cursor is on the line directly above the function or method definition."), NPP_PLUGIN_NAME, MB_OK|MB_ICONERROR);
+		return std::string("");
+	}
+
+	return doc_block;
+}
+
+// Get the current parser and text to parse for a class
+std::string ParseClass(void)
+{
+	std::string doc_block;
+	const Parser *p;
+	int found, curLine, foundLine;
+	char *buffer;
+
+	if (!(p = getCurrentParser()))
+	{
+		MessageBox(NULL, TEXT("Unrecognized language type."), NPP_PLUGIN_NAME, MB_OK | MB_ICONERROR);
+		return std::string("");
+	}
+
+	// External parsers are simple enough since they don't need any text to parse
+	if (p->external)
+		return FormatFunctionBlock(p, &p->pd, NULL);
+
+	// Get the text until a closing parenthesis. Find '(' first
+	if ((found = findNext("(")) == -1)
+	{
+		MessageBox(NULL, TEXT("Error: Cannot parse function definition. Make sure the cursor is on the line directly above the function or method definition."), NPP_PLUGIN_NAME, MB_OK | MB_ICONERROR);
+		return std::string("");
+	}
+
+	// Do some sanity checking. Make sure curline <= found <= curline+2
+	curLine = SendScintilla(SCI_LINEFROMPOSITION, SendScintilla(SCI_GETCURRENTPOS));
+	foundLine = SendScintilla(SCI_LINEFROMPOSITION, found);
+	if (foundLine < curLine || foundLine > curLine + 2)
+	{
+		MessageBox(NULL, TEXT("Error: Cannot parse function definition. Make sure the cursor is on the line directly above the function or method definition."), NPP_PLUGIN_NAME, MB_OK | MB_ICONERROR);
+		return std::string("");
+	}
+
+	// Find the matching closing brace
+	if ((found = SendScintilla(SCI_BRACEMATCH, found, 0)) == -1)
+	{
+		MessageBox(NULL, TEXT("Error: Cannot parse function definition. Make sure the cursor is on the line directly above the function or method definition."), NPP_PLUGIN_NAME, MB_OK | MB_ICONERROR);
+		return std::string("");
+	}
+
+	buffer = getRange(SendScintilla(SCI_GETCURRENTPOS), found + 1);
+	doc_block = FormatFunctionBlock(p, &p->pd, buffer);
+	delete[] buffer;
+
+	// I don't think there is currently a case where callback() will return a zero length string,
+	// but check it just in case we decide to for the future.
+	if (doc_block.length() == 0)
+	{
+		MessageBox(NULL, TEXT("Error: Cannot parse function definition. Make sure the cursor is on the line directly above the function or method definition."), NPP_PLUGIN_NAME, MB_OK | MB_ICONERROR);
 		return std::string("");
 	}
 

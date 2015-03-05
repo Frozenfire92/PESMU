@@ -28,6 +28,7 @@
 extern const char *default_function_format;
 extern const char *default_internal_function_format;
 extern const char *default_file_format;
+extern const char *default_class_format;
 
 typedef std::map<std::string, std::vector<std::string>> Keywords;
 
