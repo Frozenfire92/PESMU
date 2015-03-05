@@ -24,16 +24,7 @@
     <ClCompile Include="PluginDefinition.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Dialogs\AboutDialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Dialogs\Hyperlinks.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Dialogs\StaticDialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Dialogs\SettingsDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Parsers\C_Parser.cpp">
@@ -62,12 +53,6 @@
     <ClInclude Include="Version.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Dialogs\AboutDialog.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dialogs\Hyperlinks.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Dialogs\resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -75,9 +60,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Dialogs\Window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dialogs\SettingsDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Parsers\Parsers.h">

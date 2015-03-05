@@ -21,22 +21,18 @@
 
 const char *default_function_format = 
 	"\r\n"
-	"$@brief Brief\r\n"
+	"Function descrption\r\n"
 	"\r\n"
-	"$@param [in] $PARAM $|Parameter_Description\r\n"
+	"$@param $PARAM $|Parameter_Description\r\n"
 	"$@return Return_Description\r\n"
-	"\r\n"
-	"$@details Details\r\n"
 	;
 
 const char *default_internal_function_format = 
 	"\r\n"
-	"$@brief Brief\r\n"
+	"Function descrption\r\n"
 	"\r\n"
-	"$@param [in] theParam Parameter_Description\r\n"
+	"$@param $PARAM $|Parameter_Description\r\n"
 	"$@return Return_Description\r\n"
-	"\r\n"
-	"$@details Details\r\n"
 	;
 
 const char *default_file_format = 

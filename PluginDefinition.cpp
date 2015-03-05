@@ -20,8 +20,6 @@
 #include "Utils.h"
 #include "Parsers.h"
 #include "Version.h"
-#include "SettingsDialog.h"
-#include "AboutDialog.h"
 
 // --- Local variables ---
 static bool do_active_commenting;	// active commenting - create or extend a document block
@@ -30,7 +28,7 @@ static bool do_active_commenting;	// active commenting - create or extend a docu
 static NppData nppData;
 static SciFnDirect pSciMsg;			// For direct scintilla call
 static sptr_t pSciWndData;			// For direct scintilla call
-static SettingsDialog sd;			// The settings dialog
+//static SettingsDialog sd;			// The settings dialog
 static HANDLE _hModule;				// For dialog initialization
 
 // --- Menu callbacks ---
@@ -38,19 +36,19 @@ static void doxyItFunction();
 static void doxyItFile();
 static void activeCommenting();
 //static void activeWrapping();
-static void showSettings();
-static void showAbout();
+//static void showSettings();
+//static void showAbout();
 
 // --- Global variables ---
 ShortcutKey sk = {true, true, true, 'D'};
 FuncItem funcItem[nbFunc] = {
 	{TEXT("DoxyIt - Function"), doxyItFunction,   0, false, &sk},
-	{TEXT("DoxyIt - File"),     doxyItFile,       0, false, NULL},
-	{TEXT(""),                  NULL,             0, false, NULL}, // separator
-	{TEXT("Active commenting"), activeCommenting, 0, false, NULL},
-	{TEXT(""),                  NULL,             0, false, NULL}, // separator
-	{TEXT("Settings..."),       showSettings,     0, false, NULL},
-	{TEXT("About..."),          showAbout,        0, false, NULL}
+	{TEXT("DoxyIt - File"),     doxyItFile,       0, false, NULL}//,
+	//{TEXT(""),                  NULL,             0, false, NULL}//, // separator
+	//{TEXT("Active commenting"), activeCommenting, 0, false, NULL}//,
+	//{TEXT(""),                  NULL,             0, false, NULL}, // separator
+	//{TEXT("Settings..."),       showSettings,     0, false, NULL},
+	//{TEXT("About..."),          showAbout,        0, false, NULL}
 };
 
 
@@ -248,7 +246,7 @@ void setNppInfo(NppData notepadPlusData)
 {
 	nppData = notepadPlusData;
 
-	sd.init((HINSTANCE) _hModule, nppData);
+	//sd.init((HINSTANCE) _hModule, nppData);
 }
 
 
@@ -304,22 +302,22 @@ void doxyItFile()
 	SendScintilla(SCI_REPLACESEL, SCI_UNUSED, (LPARAM) doc_block.c_str());
 }
 
-void activeCommenting()
-{
-	do_active_commenting = !do_active_commenting;
-	SendNpp(NPPM_SETMENUITEMCHECK, funcItem[3]._cmdID, (LPARAM) do_active_commenting);
-}
-
-void showSettings()
-{
-	if(!updateScintilla()) return;
-	sd.doDialog();
-}
-
-void showAbout()
-{
-	CreateDialog((HINSTANCE) _hModule, MAKEINTRESOURCE(IDD_ABOUTDLG), nppData._nppHandle, abtDlgProc);
-}
+//void activeCommenting()
+//{
+//	do_active_commenting = !do_active_commenting;
+//	SendNpp(NPPM_SETMENUITEMCHECK, funcItem[3]._cmdID, (LPARAM) do_active_commenting);
+//}
+//
+//void showSettings()
+//{
+//	if(!updateScintilla()) return;
+//	sd.doDialog();
+//}
+//
+//void showAbout()
+//{
+//	CreateDialog((HINSTANCE) _hModule, MAKEINTRESOURCE(IDD_ABOUTDLG), nppData._nppHandle, abtDlgProc);
+//}
 
 
 // --- Notification callbacks ---

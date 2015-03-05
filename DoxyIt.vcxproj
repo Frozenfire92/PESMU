@@ -94,7 +94,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)DoxyIt_Debug.dll</OutputFile>
+      <OutputFile>$(OutDir)PESMUDoc.dll</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)DoxyIt.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
@@ -106,9 +106,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Dialogs\AboutDialog.cpp" />
-    <ClCompile Include="Dialogs\Hyperlinks.cpp" />
-    <ClCompile Include="Dialogs\SettingsDialog.cpp" />
     <ClCompile Include="Dialogs\StaticDialog.cpp" />
     <ClCompile Include="DoxyIt.cpp" />
     <ClCompile Include="Parsers\C_Parser.cpp" />
@@ -120,10 +117,7 @@
     <ClCompile Include="Utilities\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Dialogs\AboutDialog.h" />
-    <ClInclude Include="Dialogs\Hyperlinks.h" />
     <ClInclude Include="Dialogs\resource.h" />
-    <ClInclude Include="Dialogs\SettingsDialog.h" />
     <ClInclude Include="Dialogs\StaticDialog.h" />
     <ClInclude Include="Dialogs\Window.h" />
     <ClInclude Include="Npp\menuCmdID.h" />
