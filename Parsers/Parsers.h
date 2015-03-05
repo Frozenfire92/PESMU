@@ -42,6 +42,7 @@ typedef struct ParserDefinition
 	std::string command_prefix;
 	std::string function_format;
 	std::string file_format;
+	std::string class_format;
 	bool align;
 } ParserDefinition;
 
@@ -76,6 +77,7 @@ typedef struct Parser
 		pd.command_prefix = cp;
 		pd.function_format = default_function_format;
 		pd.file_format = default_file_format;
+		pd.class_format = default_class_format;
 		pd.align = false;
 		initializer = i;
 		cleanup = c;
@@ -110,6 +112,8 @@ void CleanUpParsers();
 
 std::string FormatFunctionBlock(const Parser *p,const ParserDefinition *pd, const char *text);
 std::string FormatFileBlock(const ParserDefinition *pd);
+std::string FormatClassBlock(const ParserDefinition *pd);
 std::string Parse();
+std::string ParseClass();
 
 #endif

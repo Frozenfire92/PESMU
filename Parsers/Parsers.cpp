@@ -21,16 +21,14 @@
 
 const char *default_function_format = 
 	"\r\n"
-	"Function descrption\r\n"
-	"\r\n"
+	"DESCRIPTION\r\n"
 	"$@param $PARAM $|Parameter_Description\r\n"
 	"$@return Return_Description\r\n"
 	;
 
 const char *default_internal_function_format = 
 	"\r\n"
-	"Function descrption\r\n"
-	"\r\n"
+	"DESCRIPTION\r\n"
 	"$@param $PARAM $|Parameter_Description\r\n"
 	"$@return Return_Description\r\n"
 	;
@@ -38,15 +36,13 @@ const char *default_internal_function_format =
 const char *default_file_format = 
 	"\r\n"
 	"$@file $FILENAME\r\n"
-	"$@brief Brief\r\n"
 	;
 
 const char *default_class_format = 
 	"\r\n"
-	"Class description\r\n"
-	"\r\n"
-	"$@author \r\n"
-	"$@version \r\n"
+	"DESCRIPTION\r\n"
+	"$@author\r\n"
+	"$@version\r\n"
 	;
 
 const Parser *getParserByName(std::wstring name)
@@ -138,6 +134,7 @@ void addNewParser(std::string name, ParserDefinition *pd)
 		p->pd.command_prefix = "\\";
 		p->pd.file_format = default_file_format;
 		p->pd.function_format = default_internal_function_format;
+		p->pd.class_format = default_class_format;
 		p->pd.align = false; // not used
 	}
 	else
@@ -302,16 +299,13 @@ std::string FormatFunctionBlock(const Parser *p, const ParserDefinition *pd, con
 	return FormatBlock(pd, kw, pd->function_format);
 }
 
-std::string FormatClassBlock(const Parser *p, const ParserDefinition *pd, const char *text)
+std::string FormatClassBlock(const ParserDefinition *pd)
 {
 	Keywords kw;
 
-	if (!p->external)
-	{
-		kw = p->parse(pd, text);
-		if (kw.size() == 0) return std::string("");
-	}
+	FillExtraKeywords(kw);
 
+	return FormatBlock(pd, kw, pd->class_format);
 }
 
 // Get the current parser and text to parse
@@ -376,7 +370,7 @@ std::string ParseClass(void)
 	std::string doc_block;
 	const Parser *p;
 	int found, curLine, foundLine;
-	char *buffer;
+	found = 1;
 
 	if (!(p = getCurrentParser()))
 	{
@@ -386,12 +380,12 @@ std::string ParseClass(void)
 
 	// External parsers are simple enough since they don't need any text to parse
 	if (p->external)
-		return FormatFunctionBlock(p, &p->pd, NULL);
+		return FormatClassBlock(&p->pd);
 
-	// Get the text until a closing parenthesis. Find '(' first
-	if ((found = findNext("(")) == -1)
+	// Verify its a class
+	if ((found = findNext("class")) == -1)
 	{
-		MessageBox(NULL, TEXT("Error: Cannot parse function definition. Make sure the cursor is on the line directly above the function or method definition."), NPP_PLUGIN_NAME, MB_OK | MB_ICONERROR);
+		MessageBox(NULL, TEXT("Error: Cannot parse class definition. Make sure the cursor is on the line directly above the class definition."), NPP_PLUGIN_NAME, MB_OK | MB_ICONERROR);
 		return std::string("");
 	}
 
@@ -400,26 +394,17 @@ std::string ParseClass(void)
 	foundLine = SendScintilla(SCI_LINEFROMPOSITION, found);
 	if (foundLine < curLine || foundLine > curLine + 2)
 	{
-		MessageBox(NULL, TEXT("Error: Cannot parse function definition. Make sure the cursor is on the line directly above the function or method definition."), NPP_PLUGIN_NAME, MB_OK | MB_ICONERROR);
+		MessageBox(NULL, TEXT("Error: Cannot parse class definition. Make sure the cursor is on the line directly above the class definition."), NPP_PLUGIN_NAME, MB_OK | MB_ICONERROR);
 		return std::string("");
 	}
 
-	// Find the matching closing brace
-	if ((found = SendScintilla(SCI_BRACEMATCH, found, 0)) == -1)
-	{
-		MessageBox(NULL, TEXT("Error: Cannot parse function definition. Make sure the cursor is on the line directly above the function or method definition."), NPP_PLUGIN_NAME, MB_OK | MB_ICONERROR);
-		return std::string("");
-	}
-
-	buffer = getRange(SendScintilla(SCI_GETCURRENTPOS), found + 1);
-	doc_block = FormatFunctionBlock(p, &p->pd, buffer);
-	delete[] buffer;
+	doc_block = FormatClassBlock(&p->pd);
 
 	// I don't think there is currently a case where callback() will return a zero length string,
 	// but check it just in case we decide to for the future.
 	if (doc_block.length() == 0)
 	{
-		MessageBox(NULL, TEXT("Error: Cannot parse function definition. Make sure the cursor is on the line directly above the function or method definition."), NPP_PLUGIN_NAME, MB_OK | MB_ICONERROR);
+		MessageBox(NULL, TEXT("Error: Cannot parse class definition. Make sure the cursor is on the line directly above the class definition."), NPP_PLUGIN_NAME, MB_OK | MB_ICONERROR);
 		return std::string("");
 	}
 

@@ -310,9 +310,9 @@ void doxyItClass()
 
 	if (!updateScintilla()) return;
 
-	doc_block = Parse();
+	doc_block = ParseClass();
 
-	// Don't issue any warning messages, let Parse() handle that for us since it knows
+	// Don't issue any warning messages, let ParseClass() handle that for us since it knows
 	// about the error. Just return if it is a zero length string
 	if (doc_block.length() == 0)
 		return;
