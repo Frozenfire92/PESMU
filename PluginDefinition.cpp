@@ -20,6 +20,7 @@
 #include "Utils.h"
 #include "Parsers.h"
 #include "Version.h"
+#include <tchar.h> //_T
 
 // --- Local variables ---
 static bool do_active_commenting;	// active commenting - create or extend a document block
@@ -28,6 +29,8 @@ static NppData nppData;
 static SciFnDirect pSciMsg;			// For direct scintilla call
 static sptr_t pSciWndData;			// For direct scintilla call
 static HANDLE _hModule;				// For dialog initialization
+
+TCHAR PESMUCompile[] = _T("PESMUCompile.dll"); // The name of PESMU Compile dll to send messages to
 
 // --- Menu callbacks ---
 static void doxyItFunction();
@@ -338,12 +341,26 @@ void doxyItClass()
 
 static void generateHTMLFile()
 {
-	//Send message to PESMU Compile
+	// Create struct for message 
+	CommunicationInfo commInfo;
+	commInfo.internalMsg = PESMUC_GENFILE;
+	commInfo.srcModuleName = _T("PESMUDoc.dll");
+
+	// Send message to PESMU Compile, verify sent
+	if (!SendMessage(nppData._nppHandle, NPPM_MSGTOPLUGIN, (WPARAM)PESMUCompile, (LPARAM)&commInfo))
+		MessageBox(NULL, TEXT("Communication with PESMU Compile failed"), NPP_PLUGIN_NAME, MB_OK | MB_ICONERROR);
 }
 
 static void generateHTMLProject()
 {
-	//Send message to PESMU Compile
+	// Create struct for message 
+	CommunicationInfo commInfo;
+	commInfo.internalMsg = PESMUC_GENFILE;
+	commInfo.srcModuleName = _T("PESMUDoc.dll");
+
+	// Send message to PESMU Compile, verify sent
+	if (!SendMessage(nppData._nppHandle, NPPM_MSGTOPLUGIN, (WPARAM)PESMUCompile, (LPARAM)&commInfo))
+		MessageBox(NULL, TEXT("Communication with PESMU Compile failed"), NPP_PLUGIN_NAME, MB_OK | MB_ICONERROR);
 }
 
 // --- Notification callbacks ---
