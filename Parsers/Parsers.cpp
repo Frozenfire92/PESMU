@@ -23,27 +23,23 @@ const char *default_function_format =
 	"\r\n"
 	"DESCRIPTION\r\n"
 	"$@param $PARAM $|Parameter_Description\r\n"
-	"$@return Return_Description\r\n"
-	;
+	"$@return Return_Description\r\n";
 
 const char *default_internal_function_format = 
 	"\r\n"
 	"DESCRIPTION\r\n"
 	"$@param $PARAM $|Parameter_Description\r\n"
-	"$@return Return_Description\r\n"
-	;
+	"$@return Return_Description\r\n";
 
 const char *default_file_format = 
 	"\r\n"
-	"$@file $FILENAME\r\n"
-	;
+	"$FILENAME\r\n";
 
 const char *default_class_format = 
 	"\r\n"
 	"DESCRIPTION\r\n"
 	"$@author\r\n"
-	"$@version\r\n"
-	;
+	"$@version\r\n";
 
 const Parser *getParserByName(std::wstring name)
 {
@@ -153,13 +149,7 @@ void addNewParser(std::string name, ParserDefinition *pd)
 std::vector<Parser *> parsers;
 void InitializeParsers(void)
 {
-	parsers.push_back(REGISTER_PARSER(C,      C,      "C",          "/**",  " *  ", " */",  "\\", "int function(const char *ptr, int index)"));
-	parsers.push_back(REGISTER_PARSER(CPP,    C,      "C++",        "/**",  " *  ", " */",  "\\", "std::string function(const char *ptr, int &index)"));
-	parsers.push_back(REGISTER_PARSER(JAVA,   C,      "Java",       "/**",  " *  ", " */",  "@",  "public boolean action(Event event, Object arg)"));
-	parsers.push_back(REGISTER_PARSER(PYTHON, Python, "Python",     "## ",  "#  ",  "#  ",  "@",  "def foo(bar, string=None)"));
-	parsers.push_back(REGISTER_PARSER(PHP,    C,      "PHP",        "/**",  " *  ", " */",  "@",  "function myFunction($abc, $defg)"));
-	parsers.push_back(REGISTER_PARSER(JS,     C,      "JavaScript", "/**",  " *  ", " */",  "@",  "function myFunction(abc, defg)"));
-	parsers.push_back(REGISTER_PARSER(CS,     C,      "C#",         "/// ", "/// ", "/// ", "\\", "public int Method(ref int abc, int defg)"));
+	parsers.push_back(REGISTER_PARSER(JAVA, C, "Java", "/**", " *  ", " */", "@", "public boolean action(Event event, Object arg)"));
 
 	for(unsigned int i = 0; i < parsers.size(); ++i)
 		if(parsers[i]->initializer() == false)

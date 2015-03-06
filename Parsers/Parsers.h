@@ -97,7 +97,6 @@ extern std::vector<Parser *> parsers;
 	Keywords Parse_##lang(const ParserDefinition *pd, const char *text);
 
 DEFINE_PARSER(C);
-DEFINE_PARSER(Python);
 DEFINE_PARSER(Null);
 
 

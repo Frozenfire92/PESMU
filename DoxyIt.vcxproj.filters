@@ -33,9 +33,6 @@
     <ClCompile Include="Parsers\Parsers.cpp">
       <Filter>Source Files\Parsers</Filter>
     </ClCompile>
-    <ClCompile Include="Parsers\Python_Parser.cpp">
-      <Filter>Source Files\Parsers</Filter>
-    </ClCompile>
     <ClCompile Include="Utilities\trex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

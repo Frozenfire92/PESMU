@@ -111,7 +111,6 @@
     <ClCompile Include="Parsers\C_Parser.cpp" />
     <ClCompile Include="Parsers\Null_Parser.cpp" />
     <ClCompile Include="Parsers\Parsers.cpp" />
-    <ClCompile Include="Parsers\Python_Parser.cpp" />
     <ClCompile Include="PluginDefinition.cpp" />
     <ClCompile Include="Utilities\trex.cpp" />
     <ClCompile Include="Utilities\Utils.cpp" />

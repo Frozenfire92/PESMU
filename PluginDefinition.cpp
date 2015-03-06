@@ -27,7 +27,6 @@ static bool do_active_commenting;	// active commenting - create or extend a docu
 static NppData nppData;
 static SciFnDirect pSciMsg;			// For direct scintilla call
 static sptr_t pSciWndData;			// For direct scintilla call
-//static SettingsDialog sd;			// The settings dialog
 static HANDLE _hModule;				// For dialog initialization
 
 // --- Menu callbacks ---
@@ -35,20 +34,13 @@ static void doxyItFunction();
 static void doxyItFile();
 static void doxyItClass();
 static void activeCommenting();
-//static void showSettings();
-//static void showAbout();
 
 // --- Global variables ---
 ShortcutKey sk = {true, true, true, 'D'};
 FuncItem funcItem[nbFunc] = {
 	{TEXT("Document File"), doxyItFile, 0, false, NULL },
 	{TEXT("Javadoc Class"), doxyItClass,   0, false, NULL},
-	{ TEXT("Javadoc Function"), doxyItFunction, 0, false, &sk }//,
-	//{TEXT(""),                  NULL,             0, false, NULL}//, // separator
-	//{TEXT("Active commenting"), activeCommenting, 0, false, NULL}//,
-	//{TEXT(""),                  NULL,             0, false, NULL}, // separator
-	//{TEXT("Settings..."),       showSettings,     0, false, NULL},
-	//{TEXT("About..."),          showAbout,        0, false, NULL}
+	{ TEXT("Javadoc Function"), doxyItFunction, 0, false, &sk }
 };
 
 
@@ -245,8 +237,6 @@ void pluginCleanUp()
 void setNppInfo(NppData notepadPlusData)
 {
 	nppData = notepadPlusData;
-
-	//sd.init((HINSTANCE) _hModule, nppData);
 }
 
 
@@ -297,9 +287,12 @@ void doxyItFile()
 		return;
 	}
 
+	// Get the formatted comment and add a blank line
 	doc_block = FormatFileBlock(pd);
+	doc_block += "\n";
 
-	SendScintilla(SCI_REPLACESEL, SCI_UNUSED, (LPARAM) doc_block.c_str());
+	// Insert the text at the top of the file
+	SendScintilla(SCI_INSERTTEXT, (WPARAM)0, (LPARAM)doc_block.c_str());
 }
 
 void doxyItClass()
@@ -332,23 +325,6 @@ void doxyItClass()
 
 	if (indent) delete[] indent;
 }
-
-//void activeCommenting()
-//{
-//	do_active_commenting = !do_active_commenting;
-//	SendNpp(NPPM_SETMENUITEMCHECK, funcItem[3]._cmdID, (LPARAM) do_active_commenting);
-//}
-//
-//void showSettings()
-//{
-//	if(!updateScintilla()) return;
-//	sd.doDialog();
-//}
-//
-//void showAbout()
-//{
-//	CreateDialog((HINSTANCE) _hModule, MAKEINTRESOURCE(IDD_ABOUTDLG), nppData._nppHandle, abtDlgProc);
-//}
 
 
 // --- Notification callbacks ---
