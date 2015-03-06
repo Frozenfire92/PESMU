@@ -33,14 +33,24 @@ static HANDLE _hModule;				// For dialog initialization
 static void doxyItFunction();
 static void doxyItFile();
 static void doxyItClass();
-static void activeCommenting();
+static void generateHTMLFile();
+static void generateHTMLProject();
 
-// --- Global variables ---
-ShortcutKey sk = {true, true, true, 'D'};
+// --- Keyboard Shortcuts ---
+ShortcutKey skDocFile = {true, true, true, 'D'};
+ShortcutKey skDocClass = {};
+ShortcutKey skDocFunc = {};
+ShortcutKey skGenFile = {};
+ShortcutKey skGenProj = {};
+
+// --- Menu Items ---
 FuncItem funcItem[nbFunc] = {
 	{TEXT("Document File"), doxyItFile, 0, false, NULL },
-	{TEXT("Javadoc Class"), doxyItClass,   0, false, NULL},
-	{ TEXT("Javadoc Function"), doxyItFunction, 0, false, &sk }
+	{TEXT("Document Class"), doxyItClass,   0, false, NULL},
+	{TEXT("Document Function"), doxyItFunction, 0, false, &sk},
+	{TEXT(""), NULL, false, NULL}, //Seperator
+	{TEXT("Generate Javadoc for File"), generateHTMLFile, 0, false, NULL},
+	{TEXT("Generate Javadoc for Project"), generateHTMLProject, 0, false, NULL}
 };
 
 
@@ -326,6 +336,15 @@ void doxyItClass()
 	if (indent) delete[] indent;
 }
 
+static void generateHTMLFile()
+{
+	//Send message to PESMU Compile
+}
+
+static void generateHTMLProject()
+{
+	//Send message to PESMU Compile
+}
 
 // --- Notification callbacks ---
 

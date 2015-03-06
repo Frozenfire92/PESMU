@@ -25,7 +25,7 @@
 #define SCI_UNUSED 0
 
 const wchar_t NPP_PLUGIN_NAME[] = TEXT("PESMU Doc");
-const int nbFunc = 3;
+const int nbFunc = 6;
 
 // --- Helper functions ---
 LRESULT SendScintilla(UINT Msg, WPARAM wParam=SCI_UNUSED, LPARAM lParam=SCI_UNUSED);
