@@ -40,9 +40,9 @@ static void generateHTMLFile();
 static void generateHTMLProject();
 
 // --- Keyboard Shortcuts ---
-ShortcutKey skDocFile = {true, true, true, 'D'};
+ShortcutKey skDocFile = {};
 ShortcutKey skDocClass = {};
-ShortcutKey skDocFunc = {};
+ShortcutKey skDocFunc = { true, true, true, 'D' };
 ShortcutKey skGenFile = {};
 ShortcutKey skGenProj = {};
 
@@ -50,7 +50,7 @@ ShortcutKey skGenProj = {};
 FuncItem funcItem[nbFunc] = {
 	{TEXT("Document File"), doxyItFile, 0, false, NULL },
 	{TEXT("Document Class"), doxyItClass,   0, false, NULL},
-	{TEXT("Document Function"), doxyItFunction, 0, false, &sk},
+	{ TEXT("Document Function"), doxyItFunction, 0, false, &skDocFunc },
 	{TEXT(""), NULL, false, NULL}, //Seperator
 	{TEXT("Generate Javadoc for File"), generateHTMLFile, 0, false, NULL},
 	{TEXT("Generate Javadoc for Project"), generateHTMLProject, 0, false, NULL}
@@ -343,7 +343,7 @@ static void generateHTMLFile()
 {
 	// Create struct for message 
 	CommunicationInfo commInfo;
-	commInfo.internalMsg = PESMUC_GENFILE;
+	commInfo.internalMsg = PESMUC_GENHTMLFILE;
 	commInfo.srcModuleName = _T("PESMUDoc.dll");
 
 	// Send message to PESMU Compile, verify sent
@@ -355,7 +355,7 @@ static void generateHTMLProject()
 {
 	// Create struct for message 
 	CommunicationInfo commInfo;
-	commInfo.internalMsg = PESMUC_GENFILE;
+	commInfo.internalMsg = PESMUC_GENHTMLPROJ;
 	commInfo.srcModuleName = _T("PESMUDoc.dll");
 
 	// Send message to PESMU Compile, verify sent

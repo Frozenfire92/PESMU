@@ -24,6 +24,10 @@
 
 #define SCI_UNUSED 0
 
+//For sending messages to PESMU Compile
+#define PESMUC_GENHTMLFILE (WM_USER + 4444);
+#define PESMUC_GENHTMLPROJ (WM_USER + 4445);
+
 const wchar_t NPP_PLUGIN_NAME[] = TEXT("PESMU Doc");
 const int nbFunc = 6;
 
