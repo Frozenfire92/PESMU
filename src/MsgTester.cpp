@@ -1,5 +1,6 @@
 #include "MsgTester.h"
 #include "nppexec_msgs.h"
+#include "NppExecPluginMsgSender.h"
 
 
 const TCHAR* CMsgTester::PLUGIN_NAME = _T("PESMU Compile");
@@ -85,7 +86,21 @@ void CMsgTester::OnNppShutdown()
 
 void CMsgTester::funcGenerateJavadocFile()
 {
-	::MessageBox(getNppWnd(), _T("Generate Javadoc file"), _T("NPEM_EXECUTE"), MB_OK | MB_ICONERROR);
+	// Create the message to send to NPPExec
+	NpeExecuteParam nep;
+	nep.szScriptBody = _T("cd $(CURRENT_DIRECTORY) \n javadoc -d javadoc $(FILE_NAME)");
+	nep.dwResult = 0; // send notification when executed
+
+	// Send message and check for failure
+	CNppExecPluginMsgSender npeMsgr(getNppWnd(), getDllFileName());
+	if (npeMsgr.NpeExecute(&nep) != NPE_EXECUTE_OK)
+	{
+		::MessageBox(getNppWnd(), _T("Operation failed"), _T("NPEM_EXECUTE"), MB_OK | MB_ICONERROR);
+		return;
+	}
+
+	// Open generated index file
+	//TODO
 }
 
 void CMsgTester::functionGenerateJavadocProject()
