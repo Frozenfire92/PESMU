@@ -54,7 +54,25 @@ extern "C" __declspec(dllexport) void beNotified(SCNotification* pscn)
 
 extern "C" __declspec(dllexport) LRESULT messageProc(UINT Message, WPARAM wParam, LPARAM lParam)
 {
-    return thePlugin.nppMessageProc(Message, wParam, lParam);
+	if (Message == NPPM_MSGTOPLUGIN)
+	{
+		CommunicationInfo* pci = (CommunicationInfo *)lParam;
+		if (pci)
+		{
+			switch (pci->internalMsg)
+			{
+			case PESMUC_GENHTMLFILE:
+				::MessageBox(thePlugin.getNppWnd(), _T("Hi"), _T("genFile"), MB_OK | MB_ICONERROR);
+				thePlugin.funcGenerateJavadocFile();
+				break;
+			case PESMUC_GENHTMLPROJ:
+				::MessageBox(thePlugin.getNppWnd(), _T("Hi"), _T("genProj"), MB_OK | MB_ICONERROR);
+				thePlugin.functionGenerateJavadocProject();
+				break;
+			}
+		}
+	}
+	return 1;
 }
 
 extern "C" __declspec(dllexport) FuncItem * getFuncsArray(int* pnbFuncItems)

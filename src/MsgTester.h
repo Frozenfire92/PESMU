@@ -27,6 +27,10 @@ class CMsgTester: public CNppPlugin
         void OnNppReady();
         void OnNppShutdown();
 
+		// External functions
+		void funcGenerateJavadocFile();
+		void functionGenerateJavadocProject();
+
 };
 
 //----------------------------------------------------------------------------

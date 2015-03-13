@@ -82,3 +82,13 @@ void CMsgTester::OnNppShutdown()
 {
     // TODO:  add your code here :)
 }
+
+void CMsgTester::funcGenerateJavadocFile()
+{
+	::MessageBox(getNppWnd(), _T("Generate Javadoc file"), _T("NPEM_EXECUTE"), MB_OK | MB_ICONERROR);
+}
+
+void CMsgTester::functionGenerateJavadocProject()
+{
+	::MessageBox(getNppWnd(), _T("Generate Javadoc project"), _T("NPEM_EXECUTE"), MB_OK | MB_ICONERROR);
+}
