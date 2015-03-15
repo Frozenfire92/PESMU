@@ -1,18 +1,11 @@
 // Main.cpp : Defines the entry point for the DLL application.
-//
 
 #include "core/base.h"
 #include "MsgTester.h"
 
-
 CMsgTester thePlugin;
 
-
-extern "C" BOOL APIENTRY DllMain( 
-                        HINSTANCE hInstance, 
-                        DWORD     dwReason, 
-                        LPVOID    lpReserved
-					 )
+extern "C" BOOL APIENTRY DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
     switch ( dwReason )
     {
@@ -54,19 +47,20 @@ extern "C" __declspec(dllexport) void beNotified(SCNotification* pscn)
 
 extern "C" __declspec(dllexport) LRESULT messageProc(UINT Message, WPARAM wParam, LPARAM lParam)
 {
+	// if a message has been sent to the plugin
 	if (Message == NPPM_MSGTOPLUGIN)
 	{
+		// if the communication info is present
 		CommunicationInfo* pci = (CommunicationInfo *)lParam;
 		if (pci)
 		{
+			// if the internal message was from PESMU Doc, generate the javadoc
 			switch (pci->internalMsg)
 			{
 			case PESMUC_GENHTMLFILE:
-				::MessageBox(thePlugin.getNppWnd(), _T("Hi"), _T("genFile"), MB_OK | MB_ICONERROR);
 				thePlugin.funcGenerateJavadocFile();
 				break;
 			case PESMUC_GENHTMLPROJ:
-				::MessageBox(thePlugin.getNppWnd(), _T("Hi"), _T("genProj"), MB_OK | MB_ICONERROR);
 				thePlugin.functionGenerateJavadocProject();
 				break;
 			}

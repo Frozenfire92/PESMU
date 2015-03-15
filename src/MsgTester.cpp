@@ -1,6 +1,7 @@
 #include "MsgTester.h"
 #include "nppexec_msgs.h"
 #include "NppExecPluginMsgSender.h"
+#include <WindowsX.h>
 
 
 const TCHAR* CMsgTester::PLUGIN_NAME = _T("PESMU Compile");
@@ -86,6 +87,31 @@ void CMsgTester::OnNppShutdown()
 
 void CMsgTester::funcGenerateJavadocFile()
 {
+	//// Get the full filepath of the currently open file
+	//TCHAR fullPath[MAX_PATH];
+	//::SendMessage(getNppWnd(), NPPM_GETFULLCURRENTPATH, (WPARAM)MAX_PATH, (LPARAM)fullPath);
+	//// Get just the name and extension of the file
+	//TCHAR namePart[MAX_PATH];
+	//::SendMessage(getNppWnd(), NPPM_GETFILENAME, (WPARAM)MAX_PATH, (LPARAM)namePart);
+	//// Get the length of paths
+	//int fullLength = _tcslen(fullPath);
+	//int nameLength = _tcslen(namePart);
+	//// Get the path without the filename
+	//TCHAR modifiedPath[MAX_PATH];
+	//_tcsncpy_s(modifiedPath, fullPath, fullLength - nameLength);
+	//// Concat the javadoc index location and do some weird type conversions, see http://stackoverflow.com/a/6814691
+	//const char* javadoc = "javadoc\\index.html && exit)";
+	//wchar_t *wjavadoc = new wchar_t[strlen(javadoc) + 1];
+	//mbstowcs(wjavadoc, javadoc, strlen(javadoc) + 1);
+	//_tcscat(modifiedPath, wjavadoc);
+
+	//const char* script = "cd $(CURRENT_DIRECTORY) \n javadoc -d javadoc $(FILE_NAME) \n cmd /K (start ";
+	//wchar_t *wscript = new wchar_t[strlen(script) + 1];
+	//mbstowcs(wscript, script, strlen(script) + 1);
+	//_tcscat(wscript, modifiedPath);
+
+	//::MessageBox(getNppWnd(), wscript, _T("NPEM_EXECUTE"), MB_OK | MB_ICONERROR);
+
 	// Create the message to send to NPPExec
 	NpeExecuteParam nep;
 	nep.szScriptBody = _T("cd $(CURRENT_DIRECTORY) \n javadoc -d javadoc $(FILE_NAME)");
@@ -98,12 +124,32 @@ void CMsgTester::funcGenerateJavadocFile()
 		::MessageBox(getNppWnd(), _T("Operation failed"), _T("NPEM_EXECUTE"), MB_OK | MB_ICONERROR);
 		return;
 	}
-
-	// Open generated index file
-	//TODO
+	// Else NPPExec succeeded, open the generated javadoc index file
+	//else
+	//{
+	//	// Get the full filepath of the currently open file
+	//	TCHAR fullPath[MAX_PATH];
+	//	::SendMessage(getNppWnd(), NPPM_GETFULLCURRENTPATH, (WPARAM)MAX_PATH, (LPARAM)fullPath);
+	//	// Get just the name and extension of the file
+	//	TCHAR namePart[MAX_PATH];
+	//	::SendMessage(getNppWnd(), NPPM_GETFILENAME, (WPARAM)MAX_PATH, (LPARAM)namePart);
+	//	// Get the length of paths
+	//	int fullLength = _tcslen(fullPath);
+	//	int nameLength = _tcslen(namePart);
+	//	// Get the path without the filename
+	//	TCHAR modifiedPath[MAX_PATH];
+	//	_tcsncpy_s(modifiedPath, fullPath, fullLength - nameLength);
+	//	// Concat the javadoc index location and do some weird type conversions, see http://stackoverflow.com/a/6814691
+	//	const char* javadoc = "javadoc\\index.html";
+	//	wchar_t *wjavadoc = new wchar_t[strlen(javadoc) + 1];
+	//	mbstowcs(wjavadoc, javadoc, strlen(javadoc) + 1);
+	//	_tcscat(modifiedPath, wjavadoc);
+	//	// Open the default browser
+	//	ShellExecute(getNppWnd(), _T("open"), modifiedPath, NULL, NULL, SW_SHOWNORMAL);
+	//}
 }
 
 void CMsgTester::functionGenerateJavadocProject()
 {
-	::MessageBox(getNppWnd(), _T("Generate Javadoc project"), _T("NPEM_EXECUTE"), MB_OK | MB_ICONERROR);
+	::MessageBox(getNppWnd(), _T("Generate Javadoc project\nTo be implemented"), _T("NPEM_EXECUTE"), MB_OK | MB_ICONERROR);
 }
