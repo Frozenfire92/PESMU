@@ -286,6 +286,7 @@ void doxyItFunction()
 	if(indent) delete[] indent;
 }
 
+// This was modified by team apple to document the top of the file instead of the current line.
 void doxyItFile()
 {
 	std::string doc_block;
@@ -308,6 +309,7 @@ void doxyItFile()
 	SendScintilla(SCI_INSERTTEXT, (WPARAM)0, (LPARAM)doc_block.c_str());
 }
 
+// This was created by team apple by modifying existing functions
 void doxyItClass()
 {
 	std::string doc_block;
