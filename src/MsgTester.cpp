@@ -87,6 +87,12 @@ void CMsgTester::OnNppShutdown()
 
 void CMsgTester::funcGenerateJavadocFile()
 {
+	/*
+		Below is code that attempted to use windows start command to open the generated javadoc
+		after it was made. However this caused instability at a seemingly random interval so
+		it was shelved to maintain stability.
+	*/
+
 	//// Get the full filepath of the currently open file
 	//TCHAR fullPath[MAX_PATH];
 	//::SendMessage(getNppWnd(), NPPM_GETFULLCURRENTPATH, (WPARAM)MAX_PATH, (LPARAM)fullPath);
@@ -115,7 +121,7 @@ void CMsgTester::funcGenerateJavadocFile()
 	// Create the message to send to NPPExec
 	NpeExecuteParam nep;
 	nep.szScriptBody = _T("cd $(CURRENT_DIRECTORY) \n javadoc -d javadoc $(FILE_NAME)");
-	nep.dwResult = 0; // send notification when executed
+	nep.dwResult = 0; // don't send notification when executed
 
 	// Send message and check for failure
 	CNppExecPluginMsgSender npeMsgr(getNppWnd(), getDllFileName());
@@ -124,6 +130,14 @@ void CMsgTester::funcGenerateJavadocFile()
 		::MessageBox(getNppWnd(), _T("Operation failed"), _T("NPEM_EXECUTE"), MB_OK | MB_ICONERROR);
 		return;
 	}
+
+
+	/*
+		Below is code that attempted to open the generated javadoc after it was generated with ShellExecute
+		the problem with this is it ran before NPPExec got a chance to generate the javadoc, thus leading to
+		unintended results, and thus shelved.
+	*/
+
 	// Else NPPExec succeeded, open the generated javadoc index file
 	//else
 	//{
