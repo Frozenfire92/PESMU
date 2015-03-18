@@ -107,7 +107,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Dialogs\StaticDialog.cpp" />
-    <ClCompile Include="DoxyIt.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Parsers\C_Parser.cpp" />
     <ClCompile Include="Parsers\Null_Parser.cpp" />
     <ClCompile Include="Parsers\Parsers.cpp" />
