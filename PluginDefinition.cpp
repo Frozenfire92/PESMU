@@ -58,8 +58,8 @@ void commandMenuInit()
     //            ShortcutKey *shortcut,          // optional. Define a shortcut to trigger this command
     //            bool check0nInit                // optional. Make this menu item be checked visually
     //            );
-    setCommand(0, TEXT("Hello Notepad++"), hello, NULL, false);
-    setCommand(1, TEXT("Hello (with dialog)"), helloDlg, NULL, false);
+    setCommand(0, TEXT("Search"), search, NULL, false);
+    //setCommand(1, TEXT("Hello (with dialog)"), helloDlg, NULL, false);
 }
 
 //
@@ -93,24 +93,37 @@ bool setCommand(size_t index, TCHAR *cmdName, PFUNCPLUGINCMD pFunc, ShortcutKey 
 //----------------------------------------------//
 //-- STEP 4. DEFINE YOUR ASSOCIATED FUNCTIONS --//
 //----------------------------------------------//
-void hello()
+void search()
 {
     // Open a new document
-    ::SendMessage(nppData._nppHandle, NPPM_MENUCOMMAND, 0, IDM_FILE_NEW);
-
+    //::SendMessage(nppData._nppHandle, NPPM_MENUCOMMAND, 0, IDM_FILE_NEW);
+    
+    HWND curScintilla;
+    const int MAX_QUERY = 400;
+    const char* pathPart1 = "https://search.oracle.com/search/search?search_p_main_operator=all&group=Documentation&q=";
+    const char* pathPart2 = "+url%3A%2Fjavase%2F8%2Fdocs%2Fapi&searchField=";
+    const char* pathPart3 = "&docsets=%2Fjavase%2F8%2Fdocs%2Fapi";
+    TCHAR selectedText[MAX_QUERY];
+    TCHAR pathFull[MAX_QUERY];
+    
     // Get the current scintilla
     int which = -1;
     ::SendMessage(nppData._nppHandle, NPPM_GETCURRENTSCINTILLA, 0, (LPARAM)&which);
     if (which == -1)
         return;
-    HWND curScintilla = (which == 0)?nppData._scintillaMainHandle:nppData._scintillaSecondHandle;
-
+    curScintilla = (which == 0)?nppData._scintillaMainHandle:nppData._scintillaSecondHandle;
+    
+    ::SendMessage(curScintilla, SCI_GETSELTEXT, 0, (LPARAM)selectedText);
+    
+    
+    
+    
     // Say hello now :
     // Scintilla control has no Unicode mode, so we use (char *) here
-    ::SendMessage(curScintilla, SCI_SETTEXT, 0, (LPARAM)"Hello, Notepad++!");
+    ::SendMessage(curScintilla, SCI_SETTEXT, 0, (LPARAM)selectedText);
 }
 
-void helloDlg()
+/*void helloDlg()
 {
     ::MessageBox(NULL, TEXT("Hello, Notepad++!"), TEXT("Notepad++ Plugin Template"), MB_OK);
-}
+}*/
