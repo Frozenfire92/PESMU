@@ -122,20 +122,27 @@ void search()
     mbstowcs(wpathPart1, pathPart1, strlen(pathPart1) + 1);
     _tcscpy(pathFull, wpathPart1);
 
-    //int selectedTextLength = _tcslen(selectedText);
-    _tcscat(pathFull, (wchar_t*)selectedText);
+    int selectedTextLength = _tcslen(selectedText);
+    const char* cselectedText = (const char*)selectedText;
+    wchar_t *wselectedText = new wchar_t[selectedTextLength];
+    mbstowcs(wselectedText, cselectedText, strlen(cselectedText) + 1);
+    _tcscat_s(pathFull, wselectedText);
 
     wchar_t *wpathPart2 = new wchar_t[strlen(pathPart2) + 1];
     mbstowcs(wpathPart2, pathPart2, strlen(pathPart2) + 1);
     _tcscat(pathFull, wpathPart2);
 
-    _tcscat(pathFull, (wchar_t*)selectedText);
+    _tcscat(pathFull, wselectedText);
 
     wchar_t *wpathPart3 = new wchar_t[strlen(pathPart3) + 1];
     mbstowcs(wpathPart3, pathPart3, strlen(pathPart3) + 1);
     _tcscat(pathFull, wpathPart3);
 
     ShellExecute(nppData._nppHandle, _T("open"), pathFull, NULL, NULL, SW_SHOWNORMAL);
+    delete []wselectedText;
+    delete []wpathPart1;
+    delete []wpathPart2;
+    delete []wpathPart3;
     
     // Say hello now :
     // Scintilla control has no Unicode mode, so we use (char *) here
