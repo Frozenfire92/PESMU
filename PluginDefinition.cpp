@@ -17,6 +17,8 @@
 
 #include "PluginDefinition.h"
 #include "menuCmdID.h"
+#include <tchar.h>
+#include <wchar.h>
 
 //
 // The plugin data that Notepad++ needs
@@ -112,15 +114,17 @@ void search()
     if (which == -1)
         return;
     curScintilla = (which == 0)?nppData._scintillaMainHandle:nppData._scintillaSecondHandle;
-    
+    //Get selected text
     ::SendMessage(curScintilla, SCI_GETSELTEXT, 0, (LPARAM)selectedText);
     
-    
+    wchar_t *wpathPart1 = new wchar_t[strlen(pathPart1) + 1];
+    mbstowcs(wpathPart1, pathPart1, strlen(pathPart1) + 1);
+    _tcscpy(pathFull, wpathPart1);
     
     
     // Say hello now :
     // Scintilla control has no Unicode mode, so we use (char *) here
-    ::SendMessage(curScintilla, SCI_SETTEXT, 0, (LPARAM)selectedText);
+    ::SendMessage(curScintilla, SCI_SETTEXT, 0, (LPARAM)pathFull);
 }
 
 /*void helloDlg()
