@@ -19,6 +19,7 @@
 #include "menuCmdID.h"
 #include <tchar.h>
 #include <wchar.h>
+#include <WindowsX.h>
 
 //
 // The plugin data that Notepad++ needs
@@ -109,7 +110,7 @@ void search()
     TCHAR pathFull[MAX_QUERY];
     
     // Get the current scintilla
-    int which = -1;
+    int which;
     ::SendMessage(nppData._nppHandle, NPPM_GETCURRENTSCINTILLA, 0, (LPARAM)&which);
     if (which == -1)
         return;
@@ -120,11 +121,25 @@ void search()
     wchar_t *wpathPart1 = new wchar_t[strlen(pathPart1) + 1];
     mbstowcs(wpathPart1, pathPart1, strlen(pathPart1) + 1);
     _tcscpy(pathFull, wpathPart1);
-    
+
+    //int selectedTextLength = _tcslen(selectedText);
+    _tcscat(pathFull, (wchar_t*)selectedText);
+
+    wchar_t *wpathPart2 = new wchar_t[strlen(pathPart2) + 1];
+    mbstowcs(wpathPart2, pathPart2, strlen(pathPart2) + 1);
+    _tcscat(pathFull, wpathPart2);
+
+    _tcscat(pathFull, (wchar_t*)selectedText);
+
+    wchar_t *wpathPart3 = new wchar_t[strlen(pathPart3) + 1];
+    mbstowcs(wpathPart3, pathPart3, strlen(pathPart3) + 1);
+    _tcscat(pathFull, wpathPart3);
+
+    ShellExecute(nppData._nppHandle, _T("open"), pathFull, NULL, NULL, SW_SHOWNORMAL);
     
     // Say hello now :
     // Scintilla control has no Unicode mode, so we use (char *) here
-    ::SendMessage(curScintilla, SCI_SETTEXT, 0, (LPARAM)pathFull);
+    //::SendMessage(curScintilla, SCI_SETTEXT, 0, (LPARAM)pathFull);
 }
 
 /*void helloDlg()
