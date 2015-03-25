@@ -118,6 +118,7 @@ void search()
     //Get selected text
     ::SendMessage(curScintilla, SCI_GETSELTEXT, 0, (LPARAM)selectedText);
     
+    //build URI
     wchar_t *wpathPart1 = new wchar_t[strlen(pathPart1) + 1];
     mbstowcs(wpathPart1, pathPart1, strlen(pathPart1) + 1);
     _tcscpy(pathFull, wpathPart1);
@@ -137,8 +138,11 @@ void search()
     wchar_t *wpathPart3 = new wchar_t[strlen(pathPart3) + 1];
     mbstowcs(wpathPart3, pathPart3, strlen(pathPart3) + 1);
     _tcscat(pathFull, wpathPart3);
-
+    
+    //Open the link in default browser
     ShellExecute(nppData._nppHandle, _T("open"), pathFull, NULL, NULL, SW_SHOWNORMAL);
+    
+    //Dealocate memory
     delete []wselectedText;
     delete []wpathPart1;
     delete []wpathPart2;
