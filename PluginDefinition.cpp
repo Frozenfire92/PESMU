@@ -61,7 +61,9 @@ void commandMenuInit()
     //            ShortcutKey *shortcut,          // optional. Define a shortcut to trigger this command
     //            bool check0nInit                // optional. Make this menu item be checked visually
     //            );
-    setCommand(0, TEXT("Search"), search, NULL, false);
+    setCommand(0, TEXT("Search API for selected text"), search, NULL, false);
+    setCommand(1, TEXT("Open Java Standard Edition 7 API"), open7, NULL, false);
+    setCommand(2, TEXT("Open Java Standard Edition 8 API"), open8, NULL, false);
     //setCommand(1, TEXT("Hello (with dialog)"), helloDlg, NULL, false);
 }
 
@@ -98,9 +100,6 @@ bool setCommand(size_t index, TCHAR *cmdName, PFUNCPLUGINCMD pFunc, ShortcutKey 
 //----------------------------------------------//
 void search()
 {
-    // Open a new document
-    //::SendMessage(nppData._nppHandle, NPPM_MENUCOMMAND, 0, IDM_FILE_NEW);
-    
     HWND curScintilla;
     const int MAX_QUERY = 400;
     const char* pathPart1 = "https://search.oracle.com/search/search?search_p_main_operator=all&group=Documentation&q=";
@@ -147,13 +146,24 @@ void search()
     delete []wpathPart1;
     delete []wpathPart2;
     delete []wpathPart3;
-    
-    // Say hello now :
-    // Scintilla control has no Unicode mode, so we use (char *) here
-    //::SendMessage(curScintilla, SCI_SETTEXT, 0, (LPARAM)pathFull);
 }
 
-/*void helloDlg()
+void open7()
 {
-    ::MessageBox(NULL, TEXT("Hello, Notepad++!"), TEXT("Notepad++ Plugin Template"), MB_OK);
-}*/
+    const char* path = "http://docs.oracle.com/javase/7/docs/api/";
+    TCHAR tpath[42];
+    wchar_t *wpath = new wchar_t[strlen(path) + 1];
+    mbstowcs(wpath, path, strlen(path) + 1);
+    _tcscpy(tpath, wpath);
+    ShellExecute(nppData._nppHandle, _T("open"), tpath, NULL, NULL, SW_SHOWNORMAL);
+}
+
+void open8()
+{
+    const char* path = "http://docs.oracle.com/javase/8/docs/api/";
+    TCHAR tpath[42];
+    wchar_t *wpath = new wchar_t[strlen(path) + 1];
+    mbstowcs(wpath, path, strlen(path) + 1);
+    _tcscpy(tpath, wpath);
+    ShellExecute(nppData._nppHandle, _T("open"), tpath, NULL, NULL, SW_SHOWNORMAL);
+}
