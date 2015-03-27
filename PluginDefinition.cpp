@@ -150,20 +150,10 @@ void search()
 
 void open7()
 {
-    const char* path = "http://docs.oracle.com/javase/7/docs/api/";
-    TCHAR tpath[42];
-    wchar_t *wpath = new wchar_t[strlen(path) + 1];
-    mbstowcs(wpath, path, strlen(path) + 1);
-    _tcscpy(tpath, wpath);
-    ShellExecute(nppData._nppHandle, _T("open"), tpath, NULL, NULL, SW_SHOWNORMAL);
+    ShellExecute(nppData._nppHandle, _T("open"), _T("http://docs.oracle.com/javase/7/docs/api/"), NULL, NULL, SW_SHOWNORMAL);
 }
 
 void open8()
 {
-    const char* path = "http://docs.oracle.com/javase/8/docs/api/";
-    TCHAR tpath[42];
-    wchar_t *wpath = new wchar_t[strlen(path) + 1];
-    mbstowcs(wpath, path, strlen(path) + 1);
-    _tcscpy(tpath, wpath);
-    ShellExecute(nppData._nppHandle, _T("open"), tpath, NULL, NULL, SW_SHOWNORMAL);
+    ShellExecute(nppData._nppHandle, _T("open"), _T("http://docs.oracle.com/javase/8/docs/api/"), NULL, NULL, SW_SHOWNORMAL);
 }
