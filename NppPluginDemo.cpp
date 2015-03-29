@@ -49,7 +49,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 extern "C" __declspec(dllexport) void setInfo(NppData notpadPlusData)
 {
 	nppData = notpadPlusData;
-	//commandMenuInit();
+	commandMenuInit();
 }
 
 extern "C" __declspec(dllexport) const TCHAR * getName()

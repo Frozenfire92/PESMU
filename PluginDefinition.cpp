@@ -21,16 +21,10 @@
 #include <wchar.h>
 #include <WindowsX.h>
 
-// Keyboard shortcuts
-ShortcutKey skSearch = { true, true, false, 'Q' };
-
 //
 // The plugin data that Notepad++ needs
 //
-FuncItem funcItem[nbFunc] = {
-    { TEXT("Search API for selected text"), search, 0, false, &skSearch },
-    { TEXT("Open Java Standard Edition 7 API"), open7, 0, false, NULL },
-    { TEXT("Open Java Standard Edition 8 API"), open8, 0, false, NULL } };
+FuncItem funcItem[nbFunc];
 
 //
 // The data of Notepad++ that you can use in your plugin commands
@@ -54,7 +48,7 @@ void pluginCleanUp()
 //
 // Initialization of your plugin commands
 // You should fill your plugins commands here
-/*void commandMenuInit()
+void commandMenuInit()
 {
 
     //--------------------------------------------//
@@ -67,11 +61,11 @@ void pluginCleanUp()
     //            ShortcutKey *shortcut,          // optional. Define a shortcut to trigger this command
     //            bool check0nInit                // optional. Make this menu item be checked visually
     //            );
-    /*setCommand(0, TEXT("Search API for selected text"), search, NULL, false);
+    setCommand(0, TEXT("Search API for selected text"), search, NULL, false);
     setCommand(1, TEXT("Open Java Standard Edition 7 API"), open7, NULL, false);
     setCommand(2, TEXT("Open Java Standard Edition 8 API"), open8, NULL, false);
     //setCommand(1, TEXT("Hello (with dialog)"), helloDlg, NULL, false);
-}*/
+}
 
 //
 // Here you can do the clean up (especially for the shortcut)
@@ -85,7 +79,7 @@ void commandMenuCleanUp()
 //
 // This function help you to initialize your plugin commands
 //
-/*bool setCommand(size_t index, TCHAR *cmdName, PFUNCPLUGINCMD pFunc, ShortcutKey *sk, bool check0nInit) 
+bool setCommand(size_t index, TCHAR *cmdName, PFUNCPLUGINCMD pFunc, ShortcutKey *sk, bool check0nInit) 
 {
     if (index >= nbFunc)
         return false;
@@ -99,7 +93,7 @@ void commandMenuCleanUp()
     funcItem[index]._pShKey = sk;
 
     return true;
-}*/
+}
 
 //----------------------------------------------//
 //-- STEP 4. DEFINE YOUR ASSOCIATED FUNCTIONS --//
