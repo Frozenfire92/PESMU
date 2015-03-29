@@ -40,19 +40,18 @@ static void generateHTMLFile();
 static void generateHTMLProject();
 
 // --- Keyboard Shortcuts ---
-ShortcutKey skDocFile = {};
-ShortcutKey skDocClass = {};
-ShortcutKey skDocFunc = { true, true, true, 'D' };
-ShortcutKey skGenFile = {};
-ShortcutKey skGenProj = {};
+ShortcutKey skDocFile = {true, true, false, 'G'};
+ShortcutKey skDocClass = {true, true, false, 'H'};
+ShortcutKey skDocFunc = {true, true, false, 'J'};
+ShortcutKey skGenFile = {true, true, false, 'T'};
 
 // --- Menu Items ---
 FuncItem funcItem[nbFunc] = {
-	{TEXT("Document File"), doxyItFile, 0, false, NULL },
-	{TEXT("Document Class"), doxyItClass,   0, false, NULL},
+	{TEXT("Document File"), doxyItFile, 0, false, &skDocFile},
+	{TEXT("Document Class"), doxyItClass,   0, false, &skDocClass},
 	{ TEXT("Document Function"), doxyItFunction, 0, false, &skDocFunc },
 	{TEXT(""), NULL, false, NULL}, //Seperator
-	{TEXT("Generate Javadoc for File"), generateHTMLFile, 0, false, NULL},
+	{TEXT("Generate Javadoc for File"), generateHTMLFile, 0, false, &skGenFile},
 	{TEXT("Generate Javadoc for Project"), generateHTMLProject, 0, false, NULL}
 };
 
