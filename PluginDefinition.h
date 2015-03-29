@@ -54,7 +54,7 @@ void pluginCleanUp();
 //
 //Initialization of your plugin commands
 //
-void commandMenuInit();
+//void commandMenuInit();
 
 //
 //Clean up your plugin commands allocation (if any)
