@@ -1,0 +1,20 @@
+<NotepadPlus>
+    <Project name="project1">
+        <File name="HelloWorld.java" />
+        <File name="GoodbyeWorld.java" />
+        <Folder name="exampledir">
+            <File name="exampledir\Gaben.java" />
+            <Folder name="exdir2">
+                <File name="exampledir\Gaben2.java" />
+            </Folder>
+            <File name="exampledir\Gaben4.java" />
+        </Folder>
+        <File name="config.xml" />
+        <Folder name="exampledir2">
+            <File name="exampledir\Gaben3.java" />
+        </Folder>
+    </Project>
+    <Project name="project2">
+        <File name="C:\Users\Cameron\Desktop\Code\login.php" />
+    </Project>
+</NotepadPlus>

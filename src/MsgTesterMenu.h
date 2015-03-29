@@ -3,7 +3,8 @@
 //----------------------------------------------------------------------------
 #include "core/NppPluginMenu.h"
 //#include "resource.h"
-
+#include <string>
+#include "tinyxml2.h"
 
 class CMsgTesterMenu : public CNppPluginMenu
 {
@@ -21,12 +22,18 @@ class CMsgTesterMenu : public CNppPluginMenu
         static FuncItem arrFuncItems[N_NBFUNCITEMS];
 
     protected:
+          const static int MAXCMDSIZE = 8192;
 		static void funcCompileFile();
 		static void funcExecuteFile();
 		static void funcCompileExecuteFile();
 		static void funcCompileProject();
 		static void funcJARProject();
-
+          static void funcCompileFolder();
+          static void funcCompileToFolder(const char*);
+          static void funcCompileToFolder(const char*, const char*);
+          static void funcExecCommand(const TCHAR*);
+          static void funcParseXMLFolder(tinyxml2::XMLElement*, std::string&, std::string, int);
+          static wchar_t* convertCharArrayToLPCWSTR(const char*);
 };
 
 //----------------------------------------------------------------------------
