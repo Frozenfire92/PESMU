@@ -24,20 +24,17 @@
 // Keyboard shortcuts
 ShortcutKey skSearch = { true, true, false, 'Q' };
 
-//
-// The plugin data that Notepad++ needs
-//
+// Menu items
 FuncItem funcItem[nbFunc] = {
-    { TEXT("Search API for selected text"), search, 0, false, &skSearch },
-    { TEXT("Open Java Standard Edition 7 API"), open7, 0, false, NULL },
-    { TEXT("Open Java Standard Edition 8 API"), open8, 0, false, NULL } };
+    //{ TEXT("Search Java 7 API for selected text"), search7, 0, false, &skSearch },
+    { TEXT("Search Java 8 API for selected text"), search8, 0, false, &skSearch },
+    //{ TEXT("Open Java Standard Edition 7 API"), open7, 0, false, NULL },
+    { TEXT("Open Java Standard Edition 8 API"), open8, 0, false, NULL } 
+};
 
-//
 // The data of Notepad++ that you can use in your plugin commands
-//
 NppData nppData;
 
-//
 // Initialize your plugin data here
 // It will be called while plugin loading   
 void pluginInit(HANDLE hModule)
@@ -101,10 +98,59 @@ void commandMenuCleanUp()
     return true;
 }*/
 
-//----------------------------------------------//
-//-- STEP 4. DEFINE YOUR ASSOCIATED FUNCTIONS --//
-//----------------------------------------------//
-void search()
+// Search Java SE 7 API for selected text
+/*void search7()
+{
+    HWND curScintilla;
+    const int MAX_QUERY = 400;
+    const char* pathPart1 = "https://search.oracle.com/search/search?search_p_main_operator=all&group=Documentation&q=";
+    const char* pathPart2 = "+url%3A%2Fjavase%2F7%2Fdocs%2Fapi&searchField=";
+    const char* pathPart3 = "&docsets=%2Fjavase%2F7%2Fdocs%2Fapi";
+    TCHAR selectedText[MAX_QUERY];
+    TCHAR pathFull[MAX_QUERY];
+
+    // Get the current scintilla
+    int which;
+    ::SendMessage(nppData._nppHandle, NPPM_GETCURRENTSCINTILLA, 0, (LPARAM)&which);
+    if (which == -1)
+        return;
+    curScintilla = (which == 0) ? nppData._scintillaMainHandle : nppData._scintillaSecondHandle;
+    //Get selected text
+    ::SendMessage(curScintilla, SCI_GETSELTEXT, 0, (LPARAM)selectedText);
+
+    //build URI
+    wchar_t *wpathPart1 = new wchar_t[strlen(pathPart1) + 1];
+    mbstowcs(wpathPart1, pathPart1, strlen(pathPart1) + 1);
+    _tcscpy(pathFull, wpathPart1);
+
+    int selectedTextLength = _tcslen(selectedText);
+    const char* cselectedText = (const char*)selectedText;
+    wchar_t *wselectedText = new wchar_t[selectedTextLength];
+    mbstowcs(wselectedText, cselectedText, strlen(cselectedText) + 1);
+    _tcscat_s(pathFull, wselectedText);
+
+    wchar_t *wpathPart2 = new wchar_t[strlen(pathPart2) + 1];
+    mbstowcs(wpathPart2, pathPart2, strlen(pathPart2) + 1);
+    _tcscat(pathFull, wpathPart2);
+
+    _tcscat(pathFull, wselectedText);
+
+    wchar_t *wpathPart3 = new wchar_t[strlen(pathPart3) + 1];
+    mbstowcs(wpathPart3, pathPart3, strlen(pathPart3) + 1);
+    _tcscat(pathFull, wpathPart3);
+
+    //Open the link in default browser
+    ShellExecute(nppData._nppHandle, _T("open"), pathFull, NULL, NULL, SW_SHOWNORMAL);
+
+    //Dealocate memory
+    delete[]wselectedText;
+    delete[]wpathPart1;
+    delete[]wpathPart2;
+    delete[]wpathPart3;
+}*/
+
+// Search Java SE 8 API for selected text
+void search8()
 {
     HWND curScintilla;
     const int MAX_QUERY = 400;
@@ -154,11 +200,13 @@ void search()
     delete []wpathPart3;
 }
 
-void open7()
+// Open Java SE 7 API for selected text
+/*void open7()
 {
     ShellExecute(nppData._nppHandle, _T("open"), _T("http://docs.oracle.com/javase/7/docs/api/"), NULL, NULL, SW_SHOWNORMAL);
-}
+}*/
 
+// Open Java SE 8 API for selected text
 void open8()
 {
     ShellExecute(nppData._nppHandle, _T("open"), _T("http://docs.oracle.com/javase/8/docs/api/"), NULL, NULL, SW_SHOWNORMAL);
