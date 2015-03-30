@@ -41,40 +41,10 @@ void pluginInit(HANDLE hModule)
 {
 }
 
-//
 // Here you can do the clean up, save the parameters (if any) for the next session
-//
 void pluginCleanUp()
 {
 }
-
-//
-// Here you can do the clean up (especially for the shortcut)
-//
-/*void commandMenuCleanUp()
-{
-	// Don't forget to deallocate your shortcut here
-}*/
-
-
-//
-// This function help you to initialize your plugin commands
-//
-/*bool setCommand(size_t index, TCHAR *cmdName, PFUNCPLUGINCMD pFunc, ShortcutKey *sk, bool check0nInit) 
-{
-    if (index >= nbFunc)
-        return false;
-
-    if (!pFunc)
-        return false;
-
-    lstrcpy(funcItem[index]._itemName, cmdName);
-    funcItem[index]._pFunc = pFunc;
-    funcItem[index]._init2Check = check0nInit;
-    funcItem[index]._pShKey = sk;
-
-    return true;
-}*/
 
 // Search Java SE 7 API for selected text
 /*void search7()
@@ -93,10 +63,10 @@ void pluginCleanUp()
     if (which == -1)
         return;
     curScintilla = (which == 0) ? nppData._scintillaMainHandle : nppData._scintillaSecondHandle;
-    //Get selected text
+    // Get selected text
     ::SendMessage(curScintilla, SCI_GETSELTEXT, 0, (LPARAM)selectedText);
 
-    //build URI
+    // Build URI
     wchar_t *wpathPart1 = new wchar_t[strlen(pathPart1) + 1];
     mbstowcs(wpathPart1, pathPart1, strlen(pathPart1) + 1);
     _tcscpy(pathFull, wpathPart1);
@@ -117,10 +87,10 @@ void pluginCleanUp()
     mbstowcs(wpathPart3, pathPart3, strlen(pathPart3) + 1);
     _tcscat(pathFull, wpathPart3);
 
-    //Open the link in default browser
+    // Open the link in default browser
     ShellExecute(nppData._nppHandle, _T("open"), pathFull, NULL, NULL, SW_SHOWNORMAL);
 
-    //Dealocate memory
+    // Dealocate memory
     delete[]wselectedText;
     delete[]wpathPart1;
     delete[]wpathPart2;
@@ -144,10 +114,10 @@ void search8()
     if (which == -1)
         return;
     curScintilla = (which == 0)?nppData._scintillaMainHandle:nppData._scintillaSecondHandle;
-    //Get selected text
+    // Get selected text
     ::SendMessage(curScintilla, SCI_GETSELTEXT, 0, (LPARAM)selectedText);
     
-    //build URI
+    // Build URI
     wchar_t *wpathPart1 = new wchar_t[strlen(pathPart1) + 1];
     mbstowcs(wpathPart1, pathPart1, strlen(pathPart1) + 1);
     _tcscpy(pathFull, wpathPart1);
@@ -168,10 +138,10 @@ void search8()
     mbstowcs(wpathPart3, pathPart3, strlen(pathPart3) + 1);
     _tcscat(pathFull, wpathPart3);
     
-    //Open the link in default browser
+    // Open the link in default browser
     ShellExecute(nppData._nppHandle, _T("open"), pathFull, NULL, NULL, SW_SHOWNORMAL);
     
-    //Dealocate memory
+    // Dealocate memory
     delete []wselectedText;
     delete []wpathPart1;
     delete []wpathPart2;

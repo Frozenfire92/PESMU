@@ -69,7 +69,6 @@ extern "C" __declspec(dllexport) void beNotified(SCNotification *notifyCode)
 	{
 		case NPPN_SHUTDOWN:
 		{
-			//commandMenuCleanUp();
 		}
 		break;
 
