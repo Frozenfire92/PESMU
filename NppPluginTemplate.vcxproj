@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{1590D7CD-7D3A-4AB7-A355-EE02F7FB987D}</ProjectGuid>
-    <RootNamespace>NppPluginTemplate</RootNamespace>
+    <RootNamespace>PESMUAPI</RootNamespace>
     <Keyword>Win32Proj</Keyword>
     <ProjectName>PESMUAPI</ProjectName>
   </PropertyGroup>
@@ -143,7 +143,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)NppPluginTemplate.dll</OutputFile>
+      <OutputFile>$(OutDir)PESMUAPI.dll</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>

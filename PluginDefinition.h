@@ -25,7 +25,7 @@
 const TCHAR NPP_PLUGIN_NAME[] = TEXT("PESMU API Search");
 
 // Here define the number of your plugin commands
-const int nbFunc = 4;
+const int nbFunc = 2;
 
 // Initialization of your plugin data
 // It will be called while plugin loading
