@@ -4,6 +4,7 @@
 #include "core/NppPluginMenu.h"
 //#include "resource.h"
 #include <string>
+#include <shobjidl.h>
 #include "tinyxml2.h"
 
 class CMsgTesterMenu : public CNppPluginMenu
@@ -27,13 +28,18 @@ class CMsgTesterMenu : public CNppPluginMenu
 		static void funcExecuteFile();
 		static void funcCompileExecuteFile();
 		static void funcCompileProject();
+          static void funcExecuteProject();
 		static void funcJARProject();
           static void funcCompileFolder();
           static void funcCompileToFolder(const char*);
           static void funcCompileToFolder(const char*, const char*);
+          static void funcCompileToFolder(const char*, const char*, const char*);
+          static void funcCompileJarToFolder(const char*, const char*, const char*);
           static void funcExecCommand(const TCHAR*);
-          static void funcParseXMLFolder(tinyxml2::XMLElement*, std::string&, std::string, int);
+          static void funcParseXMLFolder(tinyxml2::XMLElement*, std::string&, std::string, int = 100);
           static wchar_t* convertCharArrayToLPCWSTR(const char*);
+          static PWSTR funcGetMenu(DWORD = NULL);
+          static PWSTR funcGetSaveMenu(DWORD = NULL);
 };
 
 //----------------------------------------------------------------------------

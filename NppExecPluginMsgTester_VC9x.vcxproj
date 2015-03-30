@@ -135,6 +135,7 @@
     <ClCompile Include="src\core\NppPlugin.cpp" />
     <ClCompile Include="src\core\NppPluginMenu.cpp" />
     <ClCompile Include="src\core\SciMessager.cpp" />
+    <ClCompile Include="src\StaticDialog.cpp" />
     <ClCompile Include="src\tinyxml2.cpp" />
     <ClCompile Include="src\xmltest.cpp" />
   </ItemGroup>
@@ -149,7 +150,9 @@
     <ClInclude Include="src\core\NppPluginMenu.h" />
     <ClInclude Include="src\core\NppPluginMsgSender.h" />
     <ClInclude Include="src\core\SciMessager.h" />
+    <ClInclude Include="src\StaticDialog.h" />
     <ClInclude Include="src\tinyxml2.h" />
+    <ClInclude Include="src\Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
