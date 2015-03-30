@@ -49,7 +49,6 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 extern "C" __declspec(dllexport) void setInfo(NppData notpadPlusData)
 {
 	nppData = notpadPlusData;
-	//commandMenuInit();
 }
 
 extern "C" __declspec(dllexport) const TCHAR * getName()
@@ -70,7 +69,7 @@ extern "C" __declspec(dllexport) void beNotified(SCNotification *notifyCode)
 	{
 		case NPPN_SHUTDOWN:
 		{
-			commandMenuCleanUp();
+			//commandMenuCleanUp();
 		}
 		break;
 

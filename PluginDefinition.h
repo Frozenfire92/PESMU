@@ -52,14 +52,9 @@ void pluginInit(HANDLE hModule);
 void pluginCleanUp();
 
 //
-//Initialization of your plugin commands
-//
-//void commandMenuInit();
-
-//
 //Clean up your plugin commands allocation (if any)
 //
-void commandMenuCleanUp();
+//void commandMenuCleanUp();
 
 //
 // Function which sets your command 

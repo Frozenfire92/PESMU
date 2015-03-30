@@ -49,34 +49,12 @@ void pluginCleanUp()
 }
 
 //
-// Initialization of your plugin commands
-// You should fill your plugins commands here
-/*void commandMenuInit()
-{
-
-    //--------------------------------------------//
-    //-- STEP 3. CUSTOMIZE YOUR PLUGIN COMMANDS --//
-    //--------------------------------------------//
-    // with function :
-    // setCommand(int index,                      // zero based number to indicate the order of command
-    //            TCHAR *commandName,             // the command name that you want to see in plugin menu
-    //            PFUNCPLUGINCMD functionPointer, // the symbol of function (function pointer) associated with this command. The body should be defined below. See Step 4.
-    //            ShortcutKey *shortcut,          // optional. Define a shortcut to trigger this command
-    //            bool check0nInit                // optional. Make this menu item be checked visually
-    //            );
-    /*setCommand(0, TEXT("Search API for selected text"), search, NULL, false);
-    setCommand(1, TEXT("Open Java Standard Edition 7 API"), open7, NULL, false);
-    setCommand(2, TEXT("Open Java Standard Edition 8 API"), open8, NULL, false);
-    //setCommand(1, TEXT("Hello (with dialog)"), helloDlg, NULL, false);
-}*/
-
-//
 // Here you can do the clean up (especially for the shortcut)
 //
-void commandMenuCleanUp()
+/*void commandMenuCleanUp()
 {
 	// Don't forget to deallocate your shortcut here
-}
+}*/
 
 
 //
