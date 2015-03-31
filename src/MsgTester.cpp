@@ -179,12 +179,6 @@ void CMsgTester::functionGenerateJavadocProject()
      //TCHAR* cmdd = convertCharArrayToLPCWSTR(parsedWorkSpacePath);
      //::MessageBox(thePlugin.getNppWnd(), cmdd, _T("NPPCompileProject"), MB_OK | MB_ICONERROR);
 
-     //Ask the user for the folder to compile to, and convert it to char*
-     PWSTR pClassLocation = CMsgTesterMenu::funcGetMenu(FOS_PICKFOLDERS);
-     if (pClassLocation == NULL) return;
-     char classLocationPath[CMsgTesterMenu::MAXCMDSIZE / 32];
-     wcstombs(classLocationPath, pClassLocation, CMsgTesterMenu::MAXCMDSIZE / 32);
-
      //Grab the xml document and print error if unsuccessful
      tinyxml2::XMLDocument doc;
      tinyxml2::XMLError err = doc.LoadFile(workspacePath);
@@ -202,5 +196,5 @@ void CMsgTester::functionGenerateJavadocProject()
      CMsgTesterMenu::funcParseXMLFolder(project, sumURI, projectLocation);
      //Compile the project to the target folder
      char* command = "cd $(CURRENT_DIRECTORY) \n javadoc ";
-     CMsgTesterMenu::funcCompileToFolder(classLocationPath, sumURI.c_str(), command);
+     CMsgTesterMenu::funcCompileToFolder("javadoc", sumURI.c_str(), command);
 }
