@@ -165,10 +165,6 @@ void CMsgTester::funcGenerateJavadocFile()
 
 void CMsgTester::functionGenerateJavadocProject()
 {
-	::MessageBox(getNppWnd(), _T("Generate Javadoc project\nTo be implemented"), _T("NPEM_EXECUTE"), MB_OK | MB_ICONERROR);
-     //We need to execute the whole project structure with this command
-     //Get the workspace
-     //Get the workspace location from user
      PWSTR pWorkspaceLocation = CMsgTesterMenu::funcGetMenu();
      if (pWorkspaceLocation == NULL) return;
      //get location as a char*
