@@ -19,12 +19,12 @@
 #define GOTILINE_DLG_H
 
 #include "DockingDlgInterface.h"
-#include "resource.h"
+#include "Resource.h"
 
 typedef struct
 {
 	char* text;
-	HWND hScintilla;
+	HWND hScintilla, hWnd;
 	long startPosition, endPosition;
 } TodoItem;
 

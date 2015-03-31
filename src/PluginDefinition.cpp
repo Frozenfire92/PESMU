@@ -17,8 +17,10 @@
 
 #include "PluginDefinition.h"
 #include "menuCmdID.h"
+#include "Resource.h"
 
 #include <list>
+#include <Windows.h>
 #include "TaskListDlg.h"
 #include "config.h"
 
@@ -89,7 +91,6 @@ void commandMenuInit()
     //            bool check0nInit                // optional. Make this menu item be checked visually
     //            );
     setCommand(0, TEXT("Show Task List"), &displayDialog, NULL, false);
-	setCommand(1, TEXT("Reload Task List Configuration"), &reload_config_file, NULL, false);
 }
 
 //

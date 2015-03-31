@@ -1,8 +1,10 @@
 #include "config.h"
+#include "Resource.h"
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <windows.h>
 
 // constants
 
@@ -12,10 +14,9 @@ const char *k_config_value_strings[k_config_value_count]=
 	"keywords=",
 };
 
-char default_config_v1[]= "version=\n1\n\nkeywords=\nTODO:";
+char default_config_v1[] = "version=\n1\n\nkeywords=\nTODO:\nFIXME:\nUNDONE:\nHACK:";
 #define default_config default_config_v1
 const int k_current_version= 1;
-
 const char *k_config_file_path="./plugins/config/npp_task_list.cfg";
 
 // globals

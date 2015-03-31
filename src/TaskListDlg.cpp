@@ -17,6 +17,7 @@
 
 #include "TaskListDlg.h"
 #include "PluginDefinition.h"
+#include <tchar.h>
 
 extern NppData nppData;
 
@@ -24,6 +25,26 @@ BOOL CALLBACK TaskListDlg::run_dlgProc(UINT message, WPARAM wParam, LPARAM lPara
 {
 	switch (message) 
 	{
+		/*
+			This code is related to unsucessful attempts at right clicking the list box and creating a button
+		*/
+		/*case WM_RBUTTONDOWN:
+		{
+							   MessageBox(nppData._nppHandle, _T("Right button lo"), _T("RBM nest"), MB_OK);
+		}*/
+		/*case WM_INITDIALOG:
+		{
+						  CreateWindowEx(0,
+							  L"LISTBOX",
+							  TEXT("FamilyListing"),
+							  WS_BORDER | WS_CHILD | WS_VISIBLE,
+							  10, 10, 140, 120,
+							  hWndDlg,
+							  NULL,
+							  hInst,
+							  NULL);
+						  return TRUE;
+		}*/
 		case WM_COMMAND : 
 		{
 			switch ( LOWORD(wParam) )
@@ -59,6 +80,36 @@ BOOL CALLBACK TaskListDlg::run_dlgProc(UINT message, WPARAM wParam, LPARAM lPara
 							}
 
 							return TRUE;
+							break;
+						}
+						case BN_DBLCLK:
+						{
+							// Get the current scintilla
+							int which = -1;
+							::SendMessage(nppData._nppHandle, NPPM_GETCURRENTSCINTILLA, 0, (LPARAM)&which);
+							if (which == -1)
+								return FALSE;
+							HWND curScintilla = (which == 0) ? nppData._scintillaMainHandle : nppData._scintillaSecondHandle;
+
+							//get selected item
+							unsigned int index;
+							if (LB_ERR != (index = ::SendMessage((HWND)lParam, LB_GETCURSEL, NULL, NULL)))
+							{
+								TodoItem item = todoItems[index];
+
+								//make sure the line is visible
+								int line = ::SendMessage(curScintilla, SCI_LINEFROMPOSITION, item.startPosition, 0);
+								::SendMessage(curScintilla, SCI_ENSUREVISIBLE, line, 0);
+								//highlight selected item in text SCI_SETSEL
+								::SendMessage(curScintilla, SCI_SETSEL, item.endPosition, item.startPosition - 2);
+								//Deleted selected text
+								::SendMessage(curScintilla, SCI_REPLACESEL, 0, (LPARAM)"");
+							}
+							else //nothing was selected
+							{
+								return FALSE;
+							}
+							break;
 						}
 					}
 				}
