@@ -166,4 +166,45 @@ void CMsgTester::funcGenerateJavadocFile()
 void CMsgTester::functionGenerateJavadocProject()
 {
 	::MessageBox(getNppWnd(), _T("Generate Javadoc project\nTo be implemented"), _T("NPEM_EXECUTE"), MB_OK | MB_ICONERROR);
+     //We need to execute the whole project structure with this command
+     //Get the workspace
+     //Get the workspace location from user
+     PWSTR pWorkspaceLocation = CMsgTesterMenu::funcGetMenu();
+     if (pWorkspaceLocation == NULL) return;
+     //get location as a char*
+     char  workspacePath[CMsgTesterMenu::MAXCMDSIZE / 32];
+     wcstombs(workspacePath, pWorkspaceLocation, CMsgTesterMenu::MAXCMDSIZE / 32);
+     //Parse the location so it excludes the file name
+     std::string path = workspacePath;
+     size_t pos = path.find_last_of("\\");
+     if (pos < path.size()) path = path.substr(0, pos + 1);
+     char* parsedWorkSpacePath = (char*)path.c_str();
+     //Debug: print parsedWorkSpacePath
+     //TCHAR* cmdd = convertCharArrayToLPCWSTR(parsedWorkSpacePath);
+     //::MessageBox(thePlugin.getNppWnd(), cmdd, _T("NPPCompileProject"), MB_OK | MB_ICONERROR);
+
+     //Ask the user for the folder to compile to, and convert it to char*
+     PWSTR pClassLocation = CMsgTesterMenu::funcGetMenu(FOS_PICKFOLDERS);
+     if (pClassLocation == NULL) return;
+     char classLocationPath[CMsgTesterMenu::MAXCMDSIZE / 32];
+     wcstombs(classLocationPath, pClassLocation, CMsgTesterMenu::MAXCMDSIZE / 32);
+
+     //Grab the xml document and print error if unsuccessful
+     tinyxml2::XMLDocument doc;
+     tinyxml2::XMLError err = doc.LoadFile(workspacePath);
+     if (err != tinyxml2::XML_SUCCESS)
+     {
+         ::MessageBox(this->getNppWnd(), _T("Error opening workspace file"), _T("NPPCompileProject"), MB_OK | MB_ICONERROR);
+         ::MessageBox(this->getNppWnd(), pWorkspaceLocation, _T("NPPCompileProject"), MB_OK | MB_ICONERROR);
+         return;
+     }
+
+     //Parse XML
+     tinyxml2::XMLElement* project = doc.FirstChildElement("NotepadPlus")->FirstChildElement("Project");
+     std::string sumURI = "";
+     std::string projectLocation(parsedWorkSpacePath);
+     CMsgTesterMenu::funcParseXMLFolder(project, sumURI, projectLocation);
+     //Compile the project to the target folder
+     char* command = "cd $(CURRENT_DIRECTORY) \n javadoc ";
+     CMsgTesterMenu::funcCompileToFolder(classLocationPath, sumURI.c_str(), command);
 }

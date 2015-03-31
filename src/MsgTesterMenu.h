@@ -22,7 +22,7 @@ class CMsgTesterMenu : public CNppPluginMenu
         };
         static FuncItem arrFuncItems[N_NBFUNCITEMS];
 
-    protected:
+    //protected:
           const static int MAXCMDSIZE = 8192;
 		static void funcCompileFile();
 		static void funcExecuteFile();
@@ -38,7 +38,7 @@ class CMsgTesterMenu : public CNppPluginMenu
           static void funcExecCommand(const TCHAR*);
           static void funcParseXMLFolder(tinyxml2::XMLElement*, std::string&, std::string, int = 100);
           static wchar_t* convertCharArrayToLPCWSTR(const char*);
-          static PWSTR funcGetMenu(DWORD = NULL);
+          static PWSTR funcGetMenu(DWORD = NULL, const char* = "Open");
           static PWSTR funcGetSaveMenu(DWORD = NULL);
 };
 

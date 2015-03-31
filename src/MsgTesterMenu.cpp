@@ -8,10 +8,14 @@
 
 extern CMsgTester thePlugin;
 
+ShortcutKey skComp = { true, true, false, 'C' };
+ShortcutKey skRun = { true, true, false, 'E' };
+ShortcutKey skCompRun = { true, true, false, 'D' };
+
 FuncItem CMsgTesterMenu::arrFuncItems[N_NBFUNCITEMS] = {
-    { _T("Compile file"), funcCompileFile, 0, false, NULL },
-    { _T("Execute file"), funcExecuteFile, 0, false, NULL },
-    { _T("Compile and Execute file"), funcCompileExecuteFile, 0, false, NULL },
+    { _T("Compile file"), funcCompileFile, 0, false, &skComp },
+    { _T("Execute file"), funcExecuteFile, 0, false, &skRun },
+    { _T("Compile and Execute file"), funcCompileExecuteFile, 0, false, &skCompRun },
     { _T("Compile Project"), funcCompileProject, 0, false, NULL },
     { _T("Run Project"), funcExecuteProject, 0, false, NULL },
     { _T("Create JAR"), funcJARProject, 0, false, NULL }
@@ -123,7 +127,7 @@ void CMsgTesterMenu::funcParseXMLFolder(tinyxml2::XMLElement* folder, std::strin
 void CMsgTesterMenu::funcCompileProject()
 {
     //Get the workspace location from user
-    PWSTR pWorkspaceLocation = funcGetMenu();
+    PWSTR pWorkspaceLocation = funcGetMenu(NULL, "Open Workspace");
     if (pWorkspaceLocation == NULL) return;
     //get location as a char*
     char  workspacePath[MAXCMDSIZE/32];
@@ -138,7 +142,7 @@ void CMsgTesterMenu::funcCompileProject()
     //::MessageBox(thePlugin.getNppWnd(), cmdd, _T("NPPCompileProject"), MB_OK | MB_ICONERROR);
 
     //Ask the user for the folder to compile to, and convert it to char*
-    PWSTR pClassLocation = funcGetMenu(FOS_PICKFOLDERS);
+    PWSTR pClassLocation = funcGetMenu(FOS_PICKFOLDERS, "Open build folder");
     if (pClassLocation == NULL) return;
     char classLocationPath[MAXCMDSIZE/32];
     wcstombs(classLocationPath, pClassLocation, MAXCMDSIZE / 32);
@@ -206,19 +210,20 @@ void CMsgTesterMenu::funcCompileToFolder(const char* directory, const char* file
     delete cmd;
 }
 
-//Creates a JAR file of the file(s) @ directory, with jarName.
-//Optionally supports directory = null, in which case we create it @ current NPP directory.
-void CMsgTesterMenu::funcCompileJarToFolder(const char* directory, const char* fileURI, const char* jarName)
+//Creates a JAR file of the file(s) @ 
+//We need the manifest file, the jar name, and the build directory
+void CMsgTesterMenu::funcCompileJarToFolder(const char* buildDirectory, const char* manifestFile, const char* jarName)
 {
     char directory2[MAXCMDSIZE];
-    if (directory != NULL){
+    if (buildDirectory != NULL){
         strcpy_s(directory2, MAXCMDSIZE, "NPP_SAVE \n cd ");
-        strcat_s(directory2, MAXCMDSIZE, directory);
+        strcat_s(directory2, MAXCMDSIZE, buildDirectory);
     }
-    strcat_s(directory2, MAXCMDSIZE, " \n jar cvf ");
-    strcat_s(directory2, MAXCMDSIZE, jarName);
+    strcat_s(directory2, MAXCMDSIZE, " \n jar cmvf ");
+    strcat_s(directory2, MAXCMDSIZE, manifestFile);
     strcat_s(directory2, MAXCMDSIZE, " ");
-    strcat_s(directory2, MAXCMDSIZE, fileURI);
+    strcat_s(directory2, MAXCMDSIZE, jarName);
+    strcat_s(directory2, MAXCMDSIZE, " *");
     const TCHAR* cmd = convertCharArrayToLPCWSTR(directory2);
     funcExecCommand(cmd);
     delete cmd;
@@ -243,19 +248,21 @@ void CMsgTesterMenu::funcExecCommand(const TCHAR* command)
 //Prints error if fails, does nothing if user exits menu(s)
 void CMsgTesterMenu::funcJARProject()
 {
-    //Get the workspace from the user
-    PWSTR pWorkspaceLocation = funcGetMenu();
-    if (pWorkspaceLocation == NULL) return;
-    char  workspacePath[MAXCMDSIZE / 32];
-    wcstombs(workspacePath, pWorkspaceLocation, MAXCMDSIZE / 32);
-    //Parse out workspace name
-    std::string path = workspacePath;
-    size_t pos = path.find_last_of("\\");
-    if (pos < path.size()) path = path.substr(0, pos + 1);
-    char* parsedWorkspacePath = (char*)path.c_str();
+    //Get the manifest from the user
+    PWSTR pManifest = funcGetMenu(NULL, "Open Manifest File");
+    if (pManifest == NULL) return;
+    char manifestPath[MAXCMDSIZE / 32];
+    wcstombs(manifestPath, pManifest, MAXCMDSIZE / 32);
+    //Parse out manifest name
     //Debug:
     //TCHAR* cmdd = convertCharArrayToLPCWSTR(parsedWorkspacePath);
     //::MessageBox(thePlugin.getNppWnd(), cmdd, _T("NPPCompileProject"), MB_OK | MB_ICONERROR);
+
+    //Get the build directory from the user
+    PWSTR pBuildDirectory = funcGetMenu(FOS_PICKFOLDERS, "Open build folder");
+    if (pBuildDirectory == NULL) return;
+    char buildDirectoryPath[MAXCMDSIZE / 32];
+    wcstombs(buildDirectoryPath, pBuildDirectory, MAXCMDSIZE / 32);
 
     //Get the JAR name and location from the user
     PWSTR pfileNameLocation = funcGetSaveMenu(NULL);
@@ -277,29 +284,15 @@ void CMsgTesterMenu::funcJARProject()
     char* cFilePath = (char*)sPath.c_str();
     char* cFileName = (char*)fileName.c_str();
 
-    //Grab the xml document and print error if unsuccessful
-    tinyxml2::XMLDocument doc;
-    tinyxml2::XMLError err = doc.LoadFile(workspacePath);
-    if (err != tinyxml2::XML_SUCCESS)
-    {
-        ::MessageBox(thePlugin.getNppWnd(), _T("Error opening workspace file"), _T("NPPCompileProject"), MB_OK | MB_ICONERROR);
-        return;
-    }
-
-    //Parse XML
-    tinyxml2::XMLElement* project = doc.FirstChildElement("NotepadPlus")->FirstChildElement("Project");
-    std::string sumURI = "";
-    std::string projectLocation(parsedWorkspacePath);
-    funcParseXMLFolder(project, sumURI, projectLocation);
     //Create Jar with name and folder specified
-    funcCompileJarToFolder(cFilePath, sumURI.c_str(), cFileName);
+    funcCompileJarToFolder(buildDirectoryPath , manifestPath, cFileName);
 }
 
 //Asks the user for a main .class file, and executes it.
 //Does nothing if users exits menu, and NPPExec prints error if file is invalid.
 void CMsgTesterMenu::funcExecuteProject(){
     //Get file name
-    PWSTR pFileLocation = funcGetMenu();
+    PWSTR pFileLocation = funcGetMenu(NULL, "Open main class file");
     if (pFileLocation == NULL) return;
     char  filePath[MAXCMDSIZE / 32];
     wcstombs(filePath, pFileLocation, MAXCMDSIZE / 32);
@@ -333,51 +326,57 @@ void CMsgTesterMenu::funcExecuteProject(){
 
 //Creates a FileOpenDialog, and returns the selected fileURI or null otherwise.
 //'options' specifies options from FOS_<>, including if we want to select a folder (FOS_PICKFOLDERS)
-PWSTR CMsgTesterMenu::funcGetMenu(DWORD options){
+PWSTR CMsgTesterMenu::funcGetMenu(DWORD options, const char* title){
+    TCHAR* Ltitle = convertCharArrayToLPCWSTR(title);
     PWSTR returnVal = NULL;
     HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED |
         COINIT_DISABLE_OLE1DDE);
     if (SUCCEEDED(hr))
     {
         IFileOpenDialog *pFileOpen;
+        
 
         hr = CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_ALL,
             IID_IFileOpenDialog, reinterpret_cast<void**>(&pFileOpen));
         
         if (SUCCEEDED(hr))
         {
-            DWORD dwFlags;
+            hr = pFileOpen->SetTitle(Ltitle);
 
-            hr = pFileOpen->GetOptions(&dwFlags);
             if (SUCCEEDED(hr))
             {
-                hr = pFileOpen->SetOptions(dwFlags | options);
-
+                DWORD dwFlags;
+                hr = pFileOpen->GetOptions(&dwFlags);
                 if (SUCCEEDED(hr))
                 {
-                // Show the Open dialog box.
-                    hr = pFileOpen->Show(NULL);
+                    hr = pFileOpen->SetOptions(dwFlags | options);
 
-                    // Get the file name from the dialog box.
                     if (SUCCEEDED(hr))
                     {
-                        IShellItem *pItem;
-                        hr = pFileOpen->GetResult(&pItem);
+                        // Show the Open dialog box.
+                        hr = pFileOpen->Show(NULL);
+
+                        // Get the file name from the dialog box.
                         if (SUCCEEDED(hr))
                         {
-                            PWSTR pszFilePath;
-                            hr = pItem->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath);
-
-                            // Display the file name to the user.
+                            IShellItem *pItem;
+                            hr = pFileOpen->GetResult(&pItem);
                             if (SUCCEEDED(hr))
                             {
-                                //MessageBox(NULL, pszFilePath, L"File Path", MB_OK);
-                                returnVal = pszFilePath;
+                                PWSTR pszFilePath;
+                                hr = pItem->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath);
+
+                                // Display the file name to the user.
+                                if (SUCCEEDED(hr))
+                                {
+                                    //MessageBox(NULL, pszFilePath, L"File Path", MB_OK);
+                                    returnVal = pszFilePath;
+                                }
+                                pItem->Release();
                             }
-                            pItem->Release();
                         }
+                        pFileOpen->Release();
                     }
-                    pFileOpen->Release();
                 }
             }
         }
