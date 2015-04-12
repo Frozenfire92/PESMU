@@ -20,3 +20,6 @@ We attempted to modify the existing plugin [NPP Task List](https://code.google.c
 
 ### Syntax Highlighting
 We modified the default Notepad++ language file to support commonly used Java classes to aid students in understanding what is part of the language. For example `String`
+
+##### Note
+We used GitHub releases to download dlls before our presentation as school computers and other means had issues with it. Please ignore them.
